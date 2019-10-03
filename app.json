@@ -1,0 +1,7 @@
+{
+    "name": "lowoncode-runtime",
+    "description": "A LowOnCode Runtime",
+    "repository": "https://github.com/LowOnCode/runtime",
+    "logo": "https://lowoncode.com/cdn/logo.png",
+    "keywords": ["node", "lowcode", "API"]
+  }

@@ -1,5 +1,5 @@
 {
-  "name": "locruntime",
+  "name": "@lowoncode/runtime",
   "description": "LowOnCode server",
   "author": "Jelle",
   "license": "MIT",
