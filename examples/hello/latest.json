@@ -1,0 +1,88 @@
+{
+    "title":"Design",
+    "author":"Jelle",
+    "schema":"1.0.0",
+    "configuration": {
+        "port":5000
+    },
+    "nodes": [{
+        "id": "1563108178295",
+        "component": "restproxy",
+        "tab": "1551471882315",
+        "name": "GET /hello",
+        "x": 62,
+        "y": 121,
+        "connections": {
+            "0": [
+                {
+                    "index": "0",
+                    "id": "1563108181445"
+                }
+            ],
+            "2": [
+                {
+                    "index": "0",
+                    "id": "1563137371289"
+                }
+            ]
+        },
+        "state": {
+            "text": "",
+            "color": "gray"
+        },
+        "options": {
+            "duration": true,
+            "cachepolicy": 1,
+            "cacheexpire": "5 minutes",
+            "timeout": 5,
+            "respond": false,
+            "length": 5,
+            "middleware": [],
+            "auth": false,
+            "nodns": false,
+            "headersres": false,
+            "headersreq": true,
+            "target": "https://randomuser.me/api/",
+            "url": "/hello",
+            "method": "GET"
+        },
+        "color": "#6B9CE6",
+        "cloning": false
+    },
+    {
+        "id": "1563108181445",
+        "component": "restresponse",
+        "tab": "1551471882315",
+        "name": "Response",
+        "x": 427,
+        "y": 308,
+        "connections": {},
+        "state": {
+            "text": "",
+            "color": "gray"
+        },
+        "options": {},
+        "color": "#B0331B",
+        "notes": ""
+    },
+    {
+        "id": "1563137371289",
+        "component": "debug",
+        "tab": "1551471882315",
+        "name": "test",
+        "x": 466,
+        "y": 139,
+        "connections": {},
+        "state": {
+            "text": "Enabled",
+            "color": "gray"
+        },
+        "options": {
+            "type": "data",
+            "repository": false,
+            "enabled": true
+        },
+        "color": "#967ADC",
+        "notes": ""
+    }]
+}

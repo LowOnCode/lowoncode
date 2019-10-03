@@ -1,0 +1,10 @@
+{
+  "env": {
+    "amd": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "rules": {
+  }
+}
