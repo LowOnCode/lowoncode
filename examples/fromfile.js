@@ -1,4 +1,4 @@
-const loc = require('locruntime')
+const loc = require('../index')
 
 async function main () {
   const runtime = loc.createRuntime()

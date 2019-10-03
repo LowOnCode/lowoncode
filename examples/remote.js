@@ -1,7 +1,7 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
-
-const loc = require('locruntime')
+const loc = require('../index')
 const fetch = require('node-fetch')
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
 const DESIGN = process.env.DESIGN
 
