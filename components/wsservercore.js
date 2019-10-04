@@ -55,6 +55,7 @@ module.exports = {
       const settings = {
         port: 5050,
         path: '/ws',
+        server: tools.http.server, // Attach to main http server
         ...options // Merge with node settings
       }
       const wss = new WebSocket.Server(settings)
@@ -74,7 +75,7 @@ module.exports = {
       }
 
       wss.on('connection', (ws, client) => {
-        console.log('Client connected', client)
+        // console.log('Client connected', client)
 
         const updateStatus = () => status(`${ws && ws.online} client(s) connected`)
 
@@ -113,7 +114,7 @@ module.exports = {
       const { broadcast } = createws()
 
       const { bus } = targetRuntime
-      bus.onAny(function (event, value) {
+      bus.onAny((event, value) => {
         // console.log(event, value)
         // To Websocket
         broadcast([

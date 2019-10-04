@@ -114,6 +114,12 @@ module.exports = {
     }
   ],
   inputs: [],
-  html: `<b>Hello</b>`,
-  install
+
+  // ==========
+  // Lifecycle hooks
+  // ==========
+  install,
+  beforeDestroy () {
+    console.log('destroy')
+  }
 }

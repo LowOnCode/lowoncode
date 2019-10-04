@@ -13,6 +13,14 @@ async function main () {
 
   // (Optional) Start monitor on our design
   await loc.start(runtime)
+
+  // TEST - Do request
+  const { tools } = runtime
+  const { fetch } = tools
+  const url = `http://localhost:${process.env.PORT}/hello`
+  console.log(`Test http server ${url}`)
+  const resp = await fetch(url)
+  console.log('Response:', await resp.text())
 }
 
 main()

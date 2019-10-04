@@ -1,21 +1,3 @@
-const html = `<div class="padding">
-<div class="row">
-  <div class="col-md-6">
-    <div data-jc="textbox" data-jc-path="filename" data-jc-config="placeholder:@(/public/robots.txt)">@(Filename)</div>
-    <div class="help m">@(Filename relative to the application root.)</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div data-jc="dropdown" data-jc-path="type" data-jc-config="items:Buffer|buffer,Text|text">@(Read as)</div>
-  </div>
-  <div class="col-md-6">
-    <div data-jc="textbox" data-jc-path="encoding" data-jc-config="placeholder:utf8">@(Encoding) (@(default 'utf8'))</div>
-    <div class="help m">@(Only for 'Read as text')</div>
-  </div>
-</div>
-</div>`
-
 const readme = `# File Reader
 
 This component reads a file from file system.
@@ -35,7 +17,7 @@ encoding: 'utf8' // optional, default utf8
 
 const fs = require('fs')
 
-const install = function ({ log, localBus, options, ...instance }) {
+const install = function ({ log, send, localBus, options, ...instance }) {
   localBus.on('data', (incoming) => {
     const path = `.${options.filename}`
     log(path)
@@ -45,7 +27,7 @@ const install = function ({ log, localBus, options, ...instance }) {
     // instance.send(0, incoming)
 
     // Proxy and append data
-    instance.send(0, {
+    send(0, {
       proxy: incoming, // Proxy previous input
       data: resp
     })
@@ -104,6 +86,5 @@ module.exports = {
     }],
   options: { filename: '', append: true, delimiter: '\\n' },
   readme,
-  html,
   install
 }

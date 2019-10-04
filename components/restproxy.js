@@ -43,6 +43,20 @@ module.exports = {
     duration: false
   },
   readme: `This component creates a REST proxy between local endpoint and external API. Proxy supports dynamic arguments between URL addresses via \`{key}\` markup (keys must be same).`,
+
+  // ==========
+  // Lifecycle hooks
+  // ==========
+  beforeDestroy ({ tools, ...instance }) {
+    const router = tools.http.router
+
+    // Clear route
+    const name = `restproxy-${instance.id}`
+    var r = router.stack
+    const index = r.findIndex(route => route.name === name)
+    r.splice(index, 1)
+  },
+
   install ({ log, state, send, tools, ...instance }) {
     // Instance state
     state = {
@@ -50,10 +64,6 @@ module.exports = {
       durcount: 0,
       dursum: 0
     }
-    // var durcount = 0
-    // var dursum = 0
-
-    //   instance.on('close', () => UNINSTALL('route', 'id:' + instance.id))
 
     const reconfigure = () => {
       var options = instance.options
@@ -67,7 +77,7 @@ module.exports = {
       // console.dir(instance.tools.http.router)
       const router = tools.http.router
 
-      router.get(options.url, async (ctx, next) => {
+      router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {
         state.beg = new Date()
 
         const resp = await tools.fetch(options.target)
@@ -87,18 +97,6 @@ module.exports = {
         send(2, duration)
       })
     }
-
-    // instance.on('service', function () {
-    //   state.dursum = 0
-    //   state.durcount = 0
-    // })
-
-    // // Avg calculations
-    // instance.custom.duration = function () {
-    //   const avg = (state.dursum / state.durcount).floor(2)
-    //   instance.status(`${avg} sec.`)
-    //   send(2, avg)
-    // }
 
     instance.on('options', reconfigure)
     reconfigure()

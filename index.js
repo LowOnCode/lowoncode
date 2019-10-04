@@ -3,6 +3,7 @@
  */
 
 const Core = require('./lib/core')
+const { save } = require('./lib/utils')
 
 // Factory
 const createRuntime = variables => {
@@ -31,6 +32,10 @@ module.exports = {
     //   console.log('cool', payload)
     // })
     // ============
+
+    // TODO: change core.json to not use filesystem ?
+    const design = targetRuntime.getDesign()
+    save(design, '/tmp/design.json')
 
     // ============
     // Create monitor from design ( Yes, even for the core we use a lowoncode design )
