@@ -17,7 +17,6 @@ module.exports = {
   },
   readme: `This node passes a global variable`,
   mounted: ({ send, options, variables }) => {
-    console.log('Hello from input')
     // bus.on('data', (incoming) => {
     //   console.log('DEBUG received:', incoming)
     // })

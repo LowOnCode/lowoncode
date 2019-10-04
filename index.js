@@ -6,20 +6,23 @@ const Core = require('./lib/core')
 const { save } = require('./lib/utils')
 
 // Factory
-const createRuntime = variables => {
-  return new Core(variables)
+const createRuntime = (variables) => {
+  const runtime = new Core(variables)
+  return runtime
 }
 
 module.exports = {
   createRuntime,
 
   // Start up REST & WebSocket for logging a runtime
-  async start (targetRuntime) {
+  async start (targetRuntime, {
+    logs = `${__dirname}/tmp`
+  }) {
     // Get the components of the target runtime
     const targetComponents = targetRuntime.getComponents()
 
     // (Optional) Create tmp file for debugging
-    await targetRuntime.savePretty(targetComponents, `${__dirname}/tmp/components.json`)
+    await targetRuntime.savePretty(targetComponents, `${logs}/components.json`)
 
     // ============
     // Monitor Server
@@ -35,7 +38,7 @@ module.exports = {
 
     // TODO: change core.json to not use filesystem ?
     const design = targetRuntime.getDesign()
-    save(design, '/tmp/design.json')
+    save(design, `${logs}/design.json`)
 
     // ============
     // Create monitor from design ( Yes, even for the core we use a lowoncode design )
@@ -45,7 +48,9 @@ module.exports = {
       targetRuntime
     }
     const runtime = createRuntime(variables)
+    // Load needed components for the core design
     await runtime.loadComponents(`${__dirname}/components`)
+    // Load from localfiles
     await runtime.loadAndRun(`${__dirname}/core.json`, targetRuntime)
   }
 }

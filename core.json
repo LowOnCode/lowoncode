@@ -1,6 +1,7 @@
 {
   "title": "LowOnCode Runtime Monitor",
   "author": "Jelle",
+  "version": "0.0.2",
   "schema": "1.0.0",
   "inputs": {
     "targetRuntime": {
@@ -23,7 +24,7 @@
       ],
       "options": {
         "method": "GET",
-        "url": "/api/routes",
+        "url": "/",
         "size": 5,
         "cacheexpire": "5 minutes",
         "cachepolicy": 0,

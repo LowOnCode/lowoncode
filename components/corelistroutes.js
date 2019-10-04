@@ -13,7 +13,7 @@ module.exports = {
   ],
   mounted ({ localBus }) {
     localBus.on('data', async (ctx) => {
-      ctx.body = ctx.router.stack.map(i => i.path)
+      ctx.body = ctx.router.stack.map(i => `${i.methods} ${i.path}`)
     })
   }
 }

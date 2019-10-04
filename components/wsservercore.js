@@ -53,7 +53,7 @@ module.exports = {
 
       const WebSocket = tools.ws
       const settings = {
-        port: 5050,
+        // port: 5050,
         path: '/ws',
         server: tools.http.server, // Attach to main http server
         ...options // Merge with node settings
