@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 
 module.exports = {
-  id: 'input',
+  name: 'input',
   title: 'Input',
   version: '1.0.0',
   color: '#5D9CEC',

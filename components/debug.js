@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 
 module.exports = {
-  id: 'debug',
+  name: 'debug',
   title: 'Debug',
   version: '1.0.0',
   color: '#5D9CEC',

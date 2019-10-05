@@ -1,23 +1,23 @@
 /* eslint-disable no-tabs */
 
 module.exports = {
-  id: 'restproxy',
+  name: 'restproxy',
   title: 'Proxy',
   group: 'REST',
   color: '#6B9CE6',
   outputs: [
     {
-      id: 0,
+      name: 0,
       color: '#6BAD57',
       description: `first output contains a __response__`
     },
     {
-      id: 1,
+      name: 1,
       color: '#F6BB42',
       description: `second output contains received data`
     },
     {
-      id: 2,
+      name: 2,
       color: '#666D77',
       description: `third output contains a average time of duration \`Number\``
     }

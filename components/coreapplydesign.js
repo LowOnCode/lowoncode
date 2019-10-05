@@ -1,5 +1,5 @@
 module.exports = {
-  id: 'coreapplydesign',
+  name: 'coreapplydesign',
   title: 'core-apply-design',
   version: '1.0.0',
   color: '#656D78',

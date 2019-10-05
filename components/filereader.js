@@ -65,7 +65,7 @@ const install = function ({ log, send, localBus, options, ...instance }) {
 }
 
 module.exports = {
-  id: 'filereader',
+  name: 'filereader',
   title: 'File Reader',
   version: '1.0.0',
   color: '#656D78',

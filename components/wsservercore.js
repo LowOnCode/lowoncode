@@ -21,7 +21,7 @@
 
 /* eslint-disable no-tabs */
 module.exports = {
-  id: 'wsservercore',
+  name: 'wsservercore',
   title: 'wsservercore',
   version: '1.0.0',
   color: '#656D78',

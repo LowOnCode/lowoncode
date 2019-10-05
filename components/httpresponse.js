@@ -11,7 +11,7 @@ const install = ({ tools, ...instance }) => {
 }
 
 module.exports = {
-  id: 'httpresponse',
+  name: 'httpresponse',
   title: 'HTTP Response',
   version: '1.0.0',
   color: '#5D9CEC',

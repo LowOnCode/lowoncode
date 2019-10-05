@@ -17,7 +17,7 @@ module.exports = {
   // Start up REST & WebSocket for logging a runtime
   async start (targetRuntime, {
     logs = `${__dirname}/tmp`
-  }) {
+  } = {}) {
     // Get the components of the target runtime
     const targetComponents = targetRuntime.getComponents()
 

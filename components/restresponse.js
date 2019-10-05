@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 
 module.exports = {
-  id: 'restresponse',
+  name: 'restresponse',
   title: 'HTTP Response',
   version: '1.0.0',
   color: '#5D9CEC',

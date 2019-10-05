@@ -2,7 +2,7 @@
 const fetch = require('node-fetch')
 
 module.exports = {
-  id: 'restproxy',
+  name: 'restproxy',
   title: 'Proxy',
   group: 'REST',
   color: '#6B9CE6',
@@ -10,17 +10,17 @@ module.exports = {
   //   output: ['#6BAD57', '#F6BB42', '#666D77'],
   outputs: [
     {
-      id: 0,
+      name: 0,
       color: '#6BAD57',
       description: `first output contains a __response__ - disabling this output will cause automatic response with code "503 service unavailable"`
     },
     {
-      id: 1,
+      name: 1,
       color: '#F6BB42',
       description: `second output contains received data`
     },
     {
-      id: 2,
+      name: 2,
       color: '#666D77',
       description: `third output contains a average time of duration \`Number\``
     }
@@ -65,7 +65,7 @@ module.exports = {
     // var durcount = 0
     // var dursum = 0
 
-    //   instance.on('close', () => UNINSTALL('route', 'id:' + instance.id))
+    //   instance.on('close', () => UNINSTALL('route', 'name:' + instance.id))
 
     instance.reconfigure = function () {
       var options = instance.options

@@ -10,7 +10,7 @@ const install = ({ log, fetch, state, send, ...instance }) => {
   // var durcount = 0
   // var dursum = 0
 
-  //   instance.on('close', () => UNINSTALL('route', 'id:' + instance.id))
+  //   instance.on('close', () => UNINSTALL('route', 'name:' + instance.id))
 
   const reconfigure = () => {
     var options = instance.options
@@ -53,7 +53,7 @@ const install = ({ log, fetch, state, send, ...instance }) => {
 }
 
 module.exports = {
-  id: 'httproute',
+  name: 'httproute',
   title: 'HTTP Route',
   group: 'HTTP',
   version: '1.0.0',
@@ -81,28 +81,6 @@ module.exports = {
     cachepolicy: { type: 'number', default: 0 },
     timeout: { type: 'number', default: 5 }
   },
-  readme: `
-  If one of the outputs is disabled then automatic responce with code "503 service unavailable" is sent.
-
-  When a request comes in bellow object is available at \`flowdata.data\`:
-  
-  \`\`\`javascript
-  {
-	  params: { id: '1' },     // params for dynamic routes, e.g. /test/{id}
-	  query: { msg: 'Hello' }, // parsed query string, e.g. /test/1?msg=Hello
-	  body: { test: 'OK' },    // object if json requests otherwise string
-	  headers: {},             // headers data
-	  session: {},             // session data
-	  user: {},                // user data
-	  files: [],               // uploaded files
-	  url: '/users/',          // a relative URL address
-	  referrer: '/',           // referrer
-	  mobile: false,           // determines mobile device
-	  robot: false,            // determines search robots/crawlsers
-	  language: 'en'           // determines language
-  }
-  \`\`\`
-  `,
   outputs: [
     {
       color: '#6BAD57',
