@@ -1,4 +1,6 @@
 .vscode
 .env
-node_modules
 tmp
+
+# Note the slash only top level node_modules
+/node_modules

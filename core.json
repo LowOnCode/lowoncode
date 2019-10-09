@@ -123,7 +123,7 @@
     },
     {
       "id": "1563306268943",
-      "component": "httpresponse",
+      "component": "httpresponse_deprecated",
       "name": "HTTP Response",
       "x": 480,
       "y": 379,
@@ -185,7 +185,7 @@
     },
     {
       "id": "1563308917534",
-      "component": "httpresponse",
+      "component": "httpresponse_deprecated",
       "name": "HTTP Response",
       "x": 467,
       "y": 518,
@@ -307,6 +307,5 @@
       "notes": ""
     }
   ],
-  "url": "http://0.0.0.0:8000/#core",
   "created": "2019-07-16T22:22:32.917Z"
 }

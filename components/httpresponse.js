@@ -1,15 +1,3 @@
-/* eslint-disable no-tabs */
-
-const install = ({ tools, ...instance }) => {
-  // console.log(instance)
-  // proxy should be a ctx of koa < BAD CODE
-  instance.localBus.on('data', (incoming) => {
-    const { proxy, data } = incoming
-    // console.log('Received', proxy)
-    proxy.body = data
-  })
-}
-
 module.exports = {
   name: 'httpresponse',
   title: 'HTTP Response',
@@ -20,12 +8,16 @@ module.exports = {
   inputs: [
     {
       color: '#666D77',
-      description: `String`
+      description: `ctx`,
+      type: `ctx`
     }],
-  options: {
-    filename: '',
-    append: true,
-    delimiter: '\\n'
-  },
-  install
+  created ({ tools, bus }) {
+    bus.on('data', (incoming) => {
+      const isCtx = mixed => (mixed.app && mixed.request)
+
+      if (isCtx(incoming)) {
+        incoming.body = incoming.body ? incoming.body : 'cool'
+      }
+    })
+  }
 }

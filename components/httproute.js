@@ -1,57 +1,3 @@
-/* eslint-disable no-tabs */
-
-const install = ({ log, fetch, state, send, ...instance }) => {
-  // Instance state
-  state = {
-    beg: new Date(),
-    durcount: 0,
-    dursum: 0
-  }
-  // var durcount = 0
-  // var dursum = 0
-
-  //   instance.on('close', () => UNINSTALL('route', 'name:' + instance.id))
-
-  const reconfigure = () => {
-    var options = instance.options
-
-    if (!options.url) {
-      instance.status('Not configured', 'red')
-      return
-    }
-
-    const router = instance.tools.http.router
-    const { method = 'GET' } = options
-
-    const handle = function (ctx, next) {
-      //   ctx.body = ctx
-      send(0, ctx)
-    }
-
-    // console.log(methodToFn, method, options.url)
-    if (method === 'GET') router.get(options.url, handle)
-    if (method === 'POST') router.post(options.url, handle)
-    if (method === 'PATCH') router.patch(options.url, handle)
-    if (method === 'DELETE') router.delete(options.url, handle)
-    if (method === 'ALL') router.all(options.url, handle)
-  }
-
-  // instance.on('service', function () {
-  //   state.dursum = 0
-  //   state.durcount = 0
-  // })
-
-  // // Avg calculations
-  // instance.custom.duration = function () {
-  //   const avg = (state.dursum / state.durcount).floor(2)
-  //   instance.status(`${avg} sec.`)
-  //   send(2, avg)
-  // }
-
-  instance.on('options', reconfigure)
-  reconfigure()
-}
-
 module.exports = {
   name: 'httproute',
   title: 'HTTP Route',
@@ -59,8 +5,6 @@ module.exports = {
   version: '1.0.0',
   color: '#5D9CEC',
   icon: 'globe',
-  input: true,
-  output: 1,
   options: {
     method: 'GET',
     url: '',
@@ -71,7 +15,7 @@ module.exports = {
   },
 
   // TODO dynamic refTemplates
-  refTemplate: (props) => `${props.method} ${props.url}`,
+  refTemplate: `{{method}} {{url}}`,
 
   props: {
     method: { type: 'enum', enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], default: 'GET' },
@@ -84,11 +28,11 @@ module.exports = {
   outputs: [
     {
       color: '#6BAD57',
-      description: `raw data`
+      description: `ctx`
     },
     {
       color: '#F6BB42',
-      description: `cached data`
+      description: `body`
     }
   ],
   inputs: [],
@@ -96,8 +40,79 @@ module.exports = {
   // ==========
   // Lifecycle hooks
   // ==========
-  install,
-  beforeDestroy () {
-    console.log('destroy')
+  beforeDestroy ({ tools, ...instance }) {
+    const router = tools.http.router
+
+    // Clear route
+    const name = `httproute-${instance.id}`
+    var r = router.stack
+    const index = r.findIndex(route => route.name === name)
+    r.splice(index, 1)
+  },
+
+  created  ({ log, fetch, state, send, ...instance }) {
+    const reconfigure = () => {
+      var options = instance.options
+
+      if (!options.url) {
+        instance.status('Not configured', 'red')
+        return
+      }
+
+      const router = instance.tools.http.router
+      const { method = 'GET' } = options
+
+      const handle = function (ctx, next) {
+        // ctx.body = 'cool'
+        send(0, ctx)
+        send(1, ctx.body)
+      }
+
+      // console.log(methodToFn, method, options.url)
+      const id = `httproute-${instance.id}`
+      const { url } = options
+
+      if (method === 'GET') router.get(id, url, handle)
+      if (method === 'POST') router.post(id, url, handle)
+      if (method === 'PATCH') router.patch(id, url, handle)
+      if (method === 'DELETE') router.delete(id, url, handle)
+      if (method === 'ALL') router.all(id, url, handle)
+    }
+
+    instance.on('options', reconfigure)
+    reconfigure()
   }
 }
+
+// const reconfigure = () => {
+//   var options = instance.options
+
+//   if (!options.url) {
+//     instance.status('Not configured', 'red')
+//     return
+//   }
+
+//   // console.log(options)
+//   // console.dir(instance.tools.http.router)
+//   const router = tools.http.router
+
+//   router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {
+//     state.beg = new Date()
+
+//     const resp = await tools.fetch(options.target)
+//       .then(res => res.text())
+
+//     const duration = ((new Date() - state.beg) / 1000)
+//     // console.log(duration)
+
+//     state.durcount++
+//     state.dursum += duration
+//     // setTimeout2(instance.id, instance.custom.duration, 500, 10)
+
+//     ctx.body = resp
+//     // Output
+//     send(0, ctx)
+//     send(1, resp)
+//     send(2, duration)
+//   })
+// }

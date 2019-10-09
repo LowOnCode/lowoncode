@@ -1,4 +1,7 @@
 # TODO
+- Directory components
 - Design schema validator (https://jsonschema.net/)
 - Component schema validator (https://jsonschema.net/)
 - REPL
+- Log to monitor service
+- Log levels e.g. `LOG_LEVEL=verbose node index.js`

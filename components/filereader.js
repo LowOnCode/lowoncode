@@ -17,7 +17,7 @@ encoding: 'utf8' // optional, default utf8
 
 const fs = require('fs')
 
-const install = function ({ log, send, localBus, options, ...instance }) {
+const created = function ({ log, send, localBus, options, ...instance }) {
   localBus.on('data', (incoming) => {
     const path = `.${options.filename}`
     log(path)
@@ -86,5 +86,5 @@ module.exports = {
     }],
   options: { filename: '', append: true, delimiter: '\\n' },
   readme,
-  install
+  created
 }

@@ -1,5 +1,6 @@
 module.exports = {
   name: 'corelistroutes',
+  title: 'corelistroutes',
   version: '1.0.0',
   color: '#656D78',
   inputs: [

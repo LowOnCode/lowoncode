@@ -57,7 +57,7 @@ module.exports = {
     r.splice(index, 1)
   },
 
-  install ({ log, state, send, tools, ...instance }) {
+  created ({ log, state, send, tools, ...instance }) {
     // Instance state
     state = {
       beg: new Date(),
@@ -74,7 +74,6 @@ module.exports = {
       }
 
       // console.log(options)
-      // console.dir(instance.tools.http.router)
       const router = tools.http.router
 
       router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {

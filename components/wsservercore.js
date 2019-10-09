@@ -39,7 +39,7 @@ module.exports = {
   ],
   readme: `Core Ws monitoring server`,
 
-  install (instance) {
+  created (instance) {
     const { tools, log, bus, options, status } = instance
     const state = {}
 
@@ -60,8 +60,18 @@ module.exports = {
       }
       const wss = new WebSocket.Server(settings)
 
+      const stringifySafe = obj => {
+        try {
+          return JSON.stringify(obj)
+        } catch (err) {
+          // TypeError: Converting circular structure to JSON ?
+          console.warn("couldn't stringify object, message will contain empty string")
+          return null
+        }
+      }
+
       const broadcast = (msgMixed) => {
-        const msg = JSON.stringify(msgMixed)
+        const msg = stringifySafe(msgMixed)
         // log(`Currently ${wss.clients.size} clients connected`)
 
         // Broadcast to all

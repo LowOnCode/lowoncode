@@ -48,8 +48,10 @@ module.exports = {
       targetRuntime
     }
     const runtime = createRuntime(variables)
+
     // Load needed components for the core design
     await runtime.loadComponents(`${__dirname}/components`)
+
     // Load from localfiles
     await runtime.loadAndRun(`${__dirname}/core.json`, targetRuntime)
   }

@@ -1,5 +1,3 @@
-/* eslint-disable no-tabs */
-
 module.exports = {
   name: 'input',
   title: 'Input',

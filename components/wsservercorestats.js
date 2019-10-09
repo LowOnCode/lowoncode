@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 module.exports = {
   name: 'wsservercorestats',
-  title: 'wsservercore',
+  title: 'wsservercorestats',
   version: '1.0.0',
   color: '#656D78',
   options: {
@@ -18,7 +18,7 @@ module.exports = {
   ],
   readme: `Core Ws monitoring server`,
 
-  install (instance) {
+  created (instance) {
     const { tools, log } = instance
 
     const options = {
