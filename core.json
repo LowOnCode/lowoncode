@@ -18,18 +18,37 @@
       "connections": [
         {
           "fromPortId": "0",
+          "toNodeId": "coresplash_1",
+          "toPortId": "0"
+        }
+      ],
+      "options": {
+        "method": "GET",
+        "url": "/"
+      },
+      "color": "#5D9CEC"
+    },
+    {
+      "id": "coresplash_1",
+      "component": "coresplash",
+      "x": 377,
+      "y": 109
+    },
+    {
+      "id": "1563306263992",
+      "component": "httproute",
+      "x": 88,
+      "y": 101,
+      "connections": [
+        {
+          "fromPortId": "0",
           "toNodeId": "corelistroutes1",
           "toPortId": "0"
         }
       ],
       "options": {
         "method": "GET",
-        "url": "/",
-        "size": 5,
-        "cacheexpire": "5 minutes",
-        "cachepolicy": 0,
-        "timeout": 5,
-        "emptyresponse": false
+        "url": "/debug/routes"
       },
       "color": "#5D9CEC"
     },
@@ -261,31 +280,7 @@
       },
       "color": "#656D78"
     },
-    {
-      "id": "1563315541084",
-      "component": "httproute",
-      "name": "GET /api/run",
-      "x": 86,
-      "y": 636,
-      "connections": [
-        {
-          "fromPortId": "0",
-          "toNodeId": "1563315624917",
-          "toPortId": "0"
-        }
-      ],
-      "options": {
-        "method": "GET",
-        "url": "/api/run",
-        "size": 5,
-        "cacheexpire": "5 minutes",
-        "cachepolicy": 0,
-        "timeout": 5,
-        "name": "",
-        "emptyresponse": true
-      },
-      "color": "#5D9CEC"
-    },
+   
     {
       "id": "1563315576304",
       "component": "wsservercore",
@@ -297,60 +292,6 @@
         "datatype": "json"
       },
       "color": "#97c5ff",
-      "notes": ""
-    },
-    {
-      "disabled": true,
-      "id": "1563315624917",
-      "component": "function",
-      "name": "Function",
-      "x": 321,
-      "y": 645,
-      "connections": [],
-      "options": {
-        "code": "send('Hello world!');",
-        "outputs": 1
-      },
-      "color": "#656D78",
-      "notes": ""
-    },
-    {
-      "id": "1563315673263",
-      "component": "httproute",
-      "name": "GET /api/stop",
-      "x": 86,
-      "y": 743,
-      "connections": [
-        {
-          "fromPortId": "0",
-          "toNodeId": "1563315679837",
-          "toPortId": "0"
-        }
-      ],
-      "options": {
-        "method": "GET",
-        "url": "/api/stop",
-        "size": 5,
-        "cacheexpire": "5 minutes",
-        "cachepolicy": 0,
-        "timeout": 5,
-        "name": "",
-        "emptyresponse": true
-      },
-      "color": "#5D9CEC"
-    },
-    {
-      "id": "1563315679837",
-      "component": "function",
-      "name": "Function",
-      "x": 314,
-      "y": 744,
-      "connections": [],
-      "options": {
-        "code": "send('Hello world!');",
-        "outputs": 1
-      },
-      "color": "#656D78",
       "notes": ""
     }
   ],

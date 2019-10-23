@@ -4,10 +4,6 @@ module.exports = {
   version: '1.0.0',
   color: '#656D78',
   inputs: [
-    // {
-    //   color: '#6BAD57',
-    //   description: `targetRuntime`
-    // },
     {
       color: '#6BAD57',
       description: `Request`

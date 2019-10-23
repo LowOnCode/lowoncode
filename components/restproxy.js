@@ -64,6 +64,7 @@ module.exports = {
       durcount: 0,
       dursum: 0
     }
+    console.log('RESTPROXYYAWEFAWEF')
 
     const reconfigure = () => {
       var options = instance.options
@@ -75,7 +76,6 @@ module.exports = {
 
       // console.log(options)
       const router = tools.http.router
-
       router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {
         state.beg = new Date()
 
@@ -97,7 +97,7 @@ module.exports = {
       })
     }
 
-    instance.on('options', reconfigure)
+    // instance.on('options', reconfigure)
     reconfigure()
   }
 }
