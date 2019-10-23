@@ -5,3 +5,4 @@
 - REPL
 - Log to monitor service
 - Log levels e.g. `LOG_LEVEL=verbose node index.js`
+- Perhaps add https://github.com/othiym23/node-continuation-local-storage

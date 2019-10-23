@@ -1,7 +1,7 @@
 {
   "title": "LowOnCode Runtime Monitor",
   "author": "Jelle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "schema": "1.0.0",
   "inputs": {
     "targetRuntime": {
@@ -81,6 +81,53 @@
       },
       "color": "#5D9CEC"
     },
+    {
+      "id": "1563306263992",
+      "component": "httproute",
+      "name": "POST /api/restart",
+      "x": 88,
+      "y": 301,
+      "connections": [
+        {
+          "fromPortId": "0",
+          "toNodeId": "corerestart1",
+          "toPortId": "0"
+        }
+      ],
+      "options": {
+        "method": "POST",
+        "url": "/api/restart"
+      },
+      "color": "#5D9CEC"
+    },
+    {
+      "id": "corerestart1",
+      "component": "corerestart",
+      "x": 365,
+      "y": 301,
+      "options": {
+        "key": "targetRuntime"
+      },
+      "connections": [
+        {
+          "fromPortId": "0",
+          "toNodeId": "httpresponse_restart",
+          "toPortId": "0"
+        }
+      ],
+      "color": "#5D9CEC"
+    },
+    {
+      "id": "httpresponse_restart",
+      "component": "httpresponse",
+      "x": 480,
+      "y": 379,
+      "connections": [],
+      "options": {},
+      "color": "#5D9CEC",
+      "notes": ""
+    },
+
     {
       "id": "coreapplydesign1",
       "component": "coreapplydesign",

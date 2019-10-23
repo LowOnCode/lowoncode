@@ -28,7 +28,7 @@ module.exports = {
     }
   ],
   options: {
-    template: '<h1>Hello {{request.header}}</h1>'
+    template: '<h1>Hello {{url}}</h1>'
   },
   props: {
     template: { type: 'string', default: '<h1>Hello {{request}}</h1>' }
@@ -41,7 +41,7 @@ module.exports = {
       const context = incoming
       const { template } = options
       // TODO: process template
-      const parsed = stringTemplateParser(template, context)
+      const parsed = stringTemplateParser(template, context.request)
 
       // Send
       // send(0, parsed)
