@@ -27,10 +27,7 @@ const created = function ({ log, send, localBus, options, ...instance }) {
     // instance.send(0, incoming)
 
     // Proxy and append data
-    send(0, {
-      proxy: incoming, // Proxy previous input
-      data: resp
-    })
+    send(0, resp, incoming)
 
     // var data = incoming.data
     // var options = instance.options

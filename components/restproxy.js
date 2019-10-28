@@ -25,7 +25,6 @@ module.exports = {
   author: 'Jelle',
   icon: 'globe',
   version: '1.0.1',
-  cloning: false,
   options: {
     method: 'GET',
     url: '',
@@ -64,7 +63,6 @@ module.exports = {
       durcount: 0,
       dursum: 0
     }
-    console.log('RESTPROXYYAWEFAWEF')
 
     const reconfigure = () => {
       var options = instance.options

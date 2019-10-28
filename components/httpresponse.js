@@ -1,7 +1,9 @@
+const isCtx = mixed => (mixed.app && mixed.request)
+
 module.exports = {
   name: 'httpresponse',
   title: 'HTTP Response',
-  version: '1.0.0',
+  version: '1.0.1',
   color: '#5D9CEC',
   icon: 'file-text-o',
   outputs: [],
@@ -11,13 +13,20 @@ module.exports = {
       description: `ctx`,
       type: `ctx`
     }],
-  created ({ tools, bus }) {
-    bus.on('data', (incoming) => {
-      const isCtx = mixed => (mixed.app && mixed.request)
-
-      if (isCtx(incoming)) {
-        incoming.body = incoming.body ? incoming.body : 'cool'
+  created ({ bus }) {
+    bus.on('data', (mixed, ctx) => {
+      if (isCtx(mixed)) {
+        mixed.body = mixed.body ? mixed.body : 'cool'
+        ctx.next()
+        return
       }
+      // console.log('httpresponse', mixed)
+      // // console.log(mixed)
+      // // console.log(ctx)
+      // // ctx.body = 'cool'
+
+      ctx.body = mixed
+      ctx.next()
     })
   }
 }

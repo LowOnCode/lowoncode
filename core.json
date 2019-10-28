@@ -1,5 +1,6 @@
 {
   "title": "LowOnCode Runtime Monitor",
+  "slug": "monitor",
   "author": "Jelle",
   "version": "0.0.3",
   "schema": "1.0.0",
@@ -156,7 +157,14 @@
       "options": {
         "key": "targetRuntime"
       },
-      "color": "#5D9CEC"
+      "color": "#5D9CEC",
+      "connections": [
+        {
+          "fromPortId": "0",
+          "toNodeId": "httpresponse_restart",
+          "toPortId": "0"
+        }
+      ]
     },
     {
       "id": "1563306263992",
@@ -189,7 +197,7 @@
     },
     {
       "id": "1563306268943",
-      "component": "httpresponse_deprecated",
+      "component": "httpresponse",
       "name": "HTTP Response",
       "x": 480,
       "y": 379,
@@ -251,7 +259,7 @@
     },
     {
       "id": "1563308917534",
-      "component": "httpresponse_deprecated",
+      "component": "httpresponse",
       "name": "HTTP Response",
       "x": 467,
       "y": 518,

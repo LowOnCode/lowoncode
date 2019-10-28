@@ -50,69 +50,52 @@ module.exports = {
     r.splice(index, 1)
   },
 
-  created  ({ log, fetch, state, send, ...instance }) {
+  created  ({ log, fetch, state, tools, send, id, options, ...instance }) {
     const reconfigure = () => {
-      var options = instance.options
-
       if (!options.url) {
         instance.status('Not configured', 'red')
         return
       }
 
-      const router = instance.tools.http.router
+      const router = tools.http.router
       const { method = 'GET' } = options
 
-      const handle = function (ctx, next) {
-        // ctx.body = 'cool'
+      const handle = async (ctx, next) => {
+        // Timeout
+        var promise1 = new Promise(function (resolve, reject) {
+          setTimeout(resolve, 5000, 'one')
+        })
+
+        // Try node chain
+        var promise2 = new Promise(function (resolve, reject) {
+          // Bind next to ctx for easy access
+          ctx.next = () => {
+            ctx.body = ctx.body || 'ai no response'
+            resolve(ctx.body)
+          }
+        })
+
+        // Send to nodechain
         send(0, ctx)
-        send(1, ctx.body)
+        send(1, ctx.body, ctx)
+
+        // Wait on timeout or get response from the node chain
+        await Promise.race([promise1, promise2]).then(function (value) {
+          console.log(value)
+        })
       }
 
-      // console.log(methodToFn, method, options.url)
-      const id = `httproute-${instance.id}`
+      const _id = `httproute-${id}`
       const { url } = options
 
-      if (method === 'GET') router.get(id, url, handle)
-      if (method === 'POST') router.post(id, url, handle)
-      if (method === 'PATCH') router.patch(id, url, handle)
-      if (method === 'DELETE') router.delete(id, url, handle)
-      if (method === 'ALL') router.all(id, url, handle)
+      if (method === 'GET') router.get(_id, url, handle)
+      if (method === 'POST') router.post(_id, url, handle)
+      if (method === 'PATCH') router.patch(_id, url, handle)
+      if (method === 'DELETE') router.delete(_id, url, handle)
+      if (method === 'ALL') router.all(_id, url, handle)
     }
 
-    instance.on('options', reconfigure)
+    // instance.on('options', reconfigure)
     reconfigure()
   }
 }
-
-// const reconfigure = () => {
-//   var options = instance.options
-
-//   if (!options.url) {
-//     instance.status('Not configured', 'red')
-//     return
-//   }
-
-//   // console.log(options)
-//   // console.dir(instance.tools.http.router)
-//   const router = tools.http.router
-
-//   router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {
-//     state.beg = new Date()
-
-//     const resp = await tools.fetch(options.target)
-//       .then(res => res.text())
-
-//     const duration = ((new Date() - state.beg) / 1000)
-//     // console.log(duration)
-
-//     state.durcount++
-//     state.dursum += duration
-//     // setTimeout2(instance.id, instance.custom.duration, 500, 10)
-
-//     ctx.body = resp
-//     // Output
-//     send(0, ctx)
-//     send(1, resp)
-//     send(2, duration)
-//   })
-// }

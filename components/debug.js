@@ -18,9 +18,9 @@ module.exports = {
     delimiter: '\\n'
   },
   readme: `This node logs the incoming message to the console`,
-  created: ({ bus }) => {
+  created: ({ bus, log }) => {
     bus.on('data', (incoming) => {
-      console.log('DEBUG received:', incoming)
+      log('DEBUG received:', incoming)
     })
   }
 }

@@ -43,6 +43,8 @@ module.exports = {
     const { tools, log, bus, options, status } = instance
     const state = {}
 
+    const warn = log
+
     // -----------
     // Helpers
     // -----------
@@ -65,7 +67,7 @@ module.exports = {
           return JSON.stringify(obj)
         } catch (err) {
           // TypeError: Converting circular structure to JSON ?
-          console.warn("couldn't stringify object, message will contain empty string")
+          warn("couldn't stringify object, message will contain empty string")
           return null
         }
       }
@@ -76,7 +78,7 @@ module.exports = {
 
         // Broadcast to all
         wss.clients.forEach((client) => {
-          // console.log('client')
+          // log('client')
 
           if (client.readyState === WebSocket.OPEN) {
             client.send(msg)
@@ -85,7 +87,7 @@ module.exports = {
       }
 
       wss.on('connection', (ws, client) => {
-        // console.log('Client connected', client)
+        // log('Client connected', client)
 
         const updateStatus = () => status(`${ws && ws.online} client(s) connected`)
 
@@ -117,7 +119,7 @@ module.exports = {
 
     // Wait on targetRuntime input
     bus.on('data', (targetRuntime) => {
-      // console.log('WS Received', targetRuntime)
+      // log('WS Received', targetRuntime)
       state.targetRuntime = targetRuntime
 
       // Received the targetRuntime .. start up
@@ -125,7 +127,7 @@ module.exports = {
 
       const { bus } = targetRuntime
       bus.onAny((event, value) => {
-        // console.log(event, value)
+        // log(event, value)
         // To Websocket
         broadcast([
           event, value
