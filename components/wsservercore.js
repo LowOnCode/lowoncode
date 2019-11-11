@@ -73,8 +73,11 @@ module.exports = {
       }
 
       const broadcast = (msgMixed) => {
+        // console.log('MSG IN', msgMixed)
+
         const msg = stringifySafe(msgMixed)
         // log(`Currently ${wss.clients.size} clients connected`)
+        // console.log('MSG toString', msg)
 
         // Broadcast to all
         wss.clients.forEach((client) => {
@@ -126,9 +129,13 @@ module.exports = {
       const { broadcast } = createws()
 
       const { bus } = targetRuntime
+
+      // ================
+      // Tap into runtime message system
+      // ================
       bus.onAny((event, value) => {
         // log(event, value)
-        // To Websocket
+        // To all Websocket
         broadcast([
           event, value
         ])

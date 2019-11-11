@@ -14,7 +14,6 @@ module.exports = {
     timeout: 5
   },
 
-  // TODO dynamic refTemplates
   refTemplate: `{{method}} {{url}}`,
 
   props: {
@@ -25,6 +24,7 @@ module.exports = {
     cachepolicy: { type: 'number', default: 0 },
     timeout: { type: 'number', default: 5 }
   },
+
   outputs: [
     {
       color: '#6BAD57',
@@ -81,7 +81,7 @@ module.exports = {
 
         // Wait on timeout or get response from the node chain
         await Promise.race([promise1, promise2]).then(function (value) {
-          console.log(value)
+          // console.log(value)
         })
       }
 
