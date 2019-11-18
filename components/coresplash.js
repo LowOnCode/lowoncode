@@ -34,19 +34,20 @@ module.exports = {
       const prettyRuntime = runtime => ` 
       <h2>${runtime.design.title}</h2>
       <small>v ${runtime.design.version} by ${runtime.design.author}</small>
-      <h3>Contains ${runtime.design.nodes.length} nodes</h3>
-      ${prettyNodes(runtime.design.nodes)}
-      <h3>Contains ${runtime.allComponents.length} components</h3>
+      <h3><a href='/_system/nodes'>Nodes</a> (${runtime.nodes.length})</h3>
+      ${prettyNodes(runtime.nodes)}
+      <h3>Components (${runtime.allComponents.length})</h3>
       ${prettyComponents(targetRuntime.allComponents, runtime.design.nodes)}
       `
       const prettyNodes = arr => `
       <table>
-      <tr><th>id</th><th>name</th><th>connections</th><th>component</th></tr>
+      <tr><th>id</th><th>name</th><th>connections</th><th>component</th><th>status</th></tr>
       ${arr.map(item => `<tr>
       <td><small><a href='${systemRootUrl}/nodes/${item.id}'>${item.id}</a><small></td> 
       <td>${item.name}</td>
       <td>${item.connections && item.connections.length}</td>
       <td>${item.component}</td>
+      <td>${item.status}</td>
       </tr>`).join('')}
       </table>`
 
@@ -64,6 +65,8 @@ module.exports = {
       // ==============
       // Body
       // ==============
+      console.log(targetRuntime.nodes)
+
       const template = `
       <h1>All routes</h1>
       <ul>
