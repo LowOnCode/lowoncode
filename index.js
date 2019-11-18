@@ -2,12 +2,14 @@
  * The main entry for the locruntime
  */
 
-const Core = require('./lib/core')
+// const Core = require('./lib/core')
+const Runtime = require('./lib/Runtime')
 const { save } = require('./lib/utils')
+const monitor = require('./monitor')
 
 // Factory
 const createRuntime = (variables) => {
-  const runtime = new Core(variables)
+  const runtime = new Runtime(variables)
   return runtime
 }
 
@@ -52,7 +54,13 @@ module.exports = {
     // Load needed components for the core design
     await runtime.loadComponents(`${__dirname}/components`)
 
-    // Load from localfiles
-    await runtime.loadAndRun(`${__dirname}/core.json`, targetRuntime)
+    // Load core design and run it and inject it with the targetRuntime
+    await runtime.loadAndRun(`${__dirname}/monitor.json`, targetRuntime)
+
+    // Setup REST monitor programmaticly
+    monitor({
+      runtime,
+      targetRuntime
+    })
   }
 }

@@ -33,8 +33,8 @@ module.exports = {
   props: {
     template: { type: 'string', default: '<h1>Hello {{request}}</h1>' }
   },
-  mounted: ({ send, bus, options }) => {
-    bus.on('data', (incoming) => {
+  mounted: ({ send, on, options }) => {
+    on('data', (incoming) => {
       console.log(incoming)
       console.log(options)
 

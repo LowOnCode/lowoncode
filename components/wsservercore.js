@@ -19,10 +19,10 @@
 //   }
 // }
 
-/* eslint-disable no-tabs */
 module.exports = {
   name: 'wsservercore',
   title: 'wsservercore',
+  description: `Websocket server for monitoring the nodes`,
   version: '1.0.0',
   color: '#656D78',
   options: {
@@ -37,18 +37,15 @@ module.exports = {
   outputs: [
 
   ],
-  readme: `Core Ws monitoring server`,
 
-  created (instance) {
-    const { tools, log, bus, options, status } = instance
+  props: {
+    path: { type: 'string', default: '/_system/ws' }
+  },
+
+  created ({ tools, log, on, options, status }) {
     const state = {}
 
     const warn = log
-
-    // -----------
-    // Helpers
-    // -----------
-    // const wsMessage = (action, payload) => ({ action, payload })
 
     const createws = () => {
       status('No client connected')
@@ -56,7 +53,7 @@ module.exports = {
       const WebSocket = tools.ws
       const settings = {
         // port: 5050,
-        path: '/ws',
+        // path: '/ws',
         server: tools.http.server, // Attach to main http server
         ...options // Merge with node settings
       }
@@ -102,16 +99,37 @@ module.exports = {
           updateStatus()
         })
 
-        ws.on('message', function (data) {
+        ws.on('message', async (data) => {
           log(data)
-          //   var flowdata = instance.make(message)
-          //   flowdata.repository.client = client
-          //   instance.send(flowdata)
-          // broadcast(data)
+
+          // Handle raw incoming message
+          // console.log(data)
+          const parsed = JSON.parse(data)
+          const [action, payload] = parsed
+          // console.log(action)
+
+          const actionHandlers = {
+            '/nodes': ({ action, payload }) => {
+              // TODO
+              return []
+            },
+            default: ({ action, payload }) => {
+              return 'unsupported action'
+            }
+          }
+
+          // Call action
+          const fn = actionHandlers[action] || actionHandlers['default']
+
+          const newPayload = await fn({ action, payload })
+          const message = [action, newPayload]
+          console.log('Sending', message)
+          ws.send(JSON.stringify(message))
         })
 
         ws.on('error', function (err, client) {
-          instance.throw(err)
+          // instance.throw(err)
+          throw new Error(err)
         })
       })
 
@@ -120,8 +138,10 @@ module.exports = {
       return { wss, broadcast }
     }
 
-    // Wait on targetRuntime input
-    bus.on('data', (targetRuntime) => {
+    // ================
+    // Wait on targetRuntime
+    // ================
+    on('data:0', (targetRuntime) => {
       // log('WS Received', targetRuntime)
       state.targetRuntime = targetRuntime
 

@@ -18,8 +18,8 @@ module.exports = {
   options: {
     timeout: 1000
   },
-  created: ({ bus, send, options }) => {
-    bus.on('data', (incoming) => {
+  created: ({ on, send, options }) => {
+    on('data', (incoming) => {
       const handle = () => {
         send(0, incoming)
       }

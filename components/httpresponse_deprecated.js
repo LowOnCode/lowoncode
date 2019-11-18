@@ -15,10 +15,10 @@ module.exports = {
     append: true,
     delimiter: '\\n'
   },
-  created ({ tools, ...instance }) {
+  created ({ tools, on }) {
     // console.log(instance)
     // proxy should be a ctx of koa < BAD CODE
-    instance.localBus.on('data', (incoming) => {
+    on('data', (incoming) => {
       const { proxy, data } = incoming
       // console.log('Received', proxy)
       proxy.body = data

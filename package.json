@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "start": "node -r dotenv/config ./examples/remote.js",
+    "docs": "browser-sync docs -w",
     "dev": "DEBUG=warn,info nodemon -r dotenv/config ./examples/remote.js",
     "dev:fromfile": "nodemon -r dotenv/config ./examples/fromfile.js"
   },

@@ -17,8 +17,8 @@ module.exports = {
   },
   description: `Swaps received design`,
 
-  mounted ({ localBus, send, options, variables, log }) {
-    localBus.on('data', async (ctx) => {
+  mounted ({ on, options, variables, log }) {
+    on('data', async (ctx) => {
       const runtime = variables[options.key || 'targetRuntime']
 
       // console.log(ctx.request.body)

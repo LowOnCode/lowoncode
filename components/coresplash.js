@@ -9,20 +9,28 @@ module.exports = {
     }
   ],
   outputs: [
-
+    {
+      color: '#6BAD57',
+      description: `Template`
+    }
   ],
   options: {
     key: ''
   },
   description: `Renders out some basic info`,
 
-  mounted ({ localBus, options, runtime, variables }) {
-    localBus.on('data', async (ctx) => {
+  mounted ({ on, send, options, runtime, variables }) {
+    on('data', async (ctx) => {
       const routes = ctx.router.stack
       // .map(i => `${i.methods} ${i.path}`)
 
+      const systemRootUrl = '/_system'
+
       const targetRuntime = variables[options.key || 'targetRuntime']
 
+      // ==============
+      // Renderers
+      // ==============
       const prettyRuntime = runtime => ` 
       <h2>${runtime.design.title}</h2>
       <small>v ${runtime.design.version} by ${runtime.design.author}</small>
@@ -35,7 +43,7 @@ module.exports = {
       <table>
       <tr><th>id</th><th>name</th><th>connections</th><th>component</th></tr>
       ${arr.map(item => `<tr>
-      <td><small>${item.id}<small></td> 
+      <td><small><a href='${systemRootUrl}/nodes/${item.id}'>${item.id}</a><small></td> 
       <td>${item.name}</td>
       <td>${item.connections && item.connections.length}</td>
       <td>${item.component}</td>
@@ -53,7 +61,10 @@ module.exports = {
       </tr>`).join('')}
       </table>`
 
-      ctx.body = `
+      // ==============
+      // Body
+      // ==============
+      const template = `
       <h1>All routes</h1>
       <ul>
       ${routes.map(elem => `<li>${elem.methods}<a href="${elem.path}">${elem.path}</a></li>`).join('')}
@@ -64,6 +75,9 @@ module.exports = {
 
       ${prettyRuntime(runtime)}
       `
+
+      // ctx.body = template
+      send(0, template, ctx)
     })
   }
 }

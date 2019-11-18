@@ -13,10 +13,10 @@ module.exports = {
       description: `ctx`,
       type: `ctx`
     }],
-  created ({ bus }) {
-    bus.on('data', (mixed, ctx) => {
+  created ({ on }) {
+    on('data', (mixed, ctx) => {
       if (isCtx(mixed)) {
-        mixed.body = mixed.body ? mixed.body : 'cool'
+        mixed.body = mixed.body ? mixed.body : 'missing body'
         ctx.next()
         return
       }
