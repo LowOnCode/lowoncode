@@ -2,6 +2,9 @@
 A component serves as a blueprint to create nodes.
 
 # Creating your first component
+To create a component best is to start with making a copy of the `hello` components below. Just place it in the folder called `/components`. If you run the instance in dev modus it will automaticly refresh and pick up your newly created component.
+
+# Component in depth
 See below a simple component. It consists of one `input` and one `output` and a `props` field which can be used to control the `options` that are availible in your code.
 
 The magic happens what you specify in the lifecycle function `created` or `mounted`. There is a slight different between both function. As in the `created` you aren't able to `send` out messages as the other component aren't most likely not initialized. Therefor we suggest to use `mounted` lifecycle function to start coding.
@@ -45,28 +48,52 @@ module.exports = {
 }
 ```
 
-
-
-# Inputs & Outputs
-Inputs and outputs define what data flows in or out the component.
+# Connections
+The inputs and outputs define what data flows in or out the component. See below an example:
 ```js
 [
-    {
+   inputs: [
+      {
         color: '#666D77',
         description: `object`,
         type: 'object'
-        id: '0'
-    }
+        name: 'object',
+      }
+    ]
+    outputs: [
+      {
+        color: '#666D77',
+        description: `object`,
+        type: 'object'
+        name: 'object',
+      }
+    ]
+]
+```
+
+> In the newer version all inputs & outputs can be merged like this:
+
+```js
+[
+    connections: [
+      {
+        color: '#666D77',
+        description: `object`,
+        type: 'object'
+        name: 'object',
+        direction: 'in'
+      }
+    ]
 ]
 ```
 Fields:
 
 | key   |      type      |  description |
 |----------|:-------------:|:------|
-| color    |  String (optional) | specify the color in the designer |
+| color    |  String (optional) | Specify the color in the designer |
 | description |    String (optional)   |   The description will be shown in the designer to hint the user |
 | type |  String (optional) |    The type will handle type checking to |
-| id |  Number / String (optional) |    Specify a unique id (not tested yet, please use the array index) |
+| name |  Number / String (optional) |    Specify a unique name |
 
 
 # Lifecycle
@@ -76,7 +103,7 @@ The following methods can be used to control a proper lifecycle:
 - `beforeDestroy` ( called when a component has been removed )
 
 # Context
-The functions are provided with some handy context helpers:
+All lifecycle methods are provided with a context. This context consist of some functions to interact with other nodes like :
 - The `send` function to send data.
 - The `bus` function to listen to events.
 - The `options` object contains the data that has been set in the node (or the default values). 
@@ -84,8 +111,8 @@ The functions are provided with some handy context helpers:
 **Note:** `send` can't be used in the `created` method as there is no receiving party yet and the send will go to the **void**.
 
 Available events are:
-- `data` will be always trigger on incoming data.
-- `data:<port>` is only triggered on incoming data on a certain port
+- `data` will always trigger on incoming data.
+- `data:<port>`, e.g. `data:2` is only triggered on incoming data on a certain port. 
 
 # State
 

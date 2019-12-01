@@ -1,66 +1,67 @@
 /**
  * The main entry for the locruntime
  */
-
-// const Core = require('./lib/core')
 const Runtime = require('./lib/Runtime')
-const { save } = require('./lib/utils')
+const httpCreate = require('./lib/http')
 const monitor = require('./monitor')
+const {
+  load,
+  save,
+  loadComponents,
+  getComponentByType,
+  prettyNode,
+  getConnectedNodesOnPort
+} = require('./lib/utils')
+
+// Create a single http server ( to support hosting environments that use process.env.PORT )
+let http = null
 
 // Factory
-const createRuntime = (variables) => {
-  const runtime = new Runtime(variables)
-  return runtime
+const create = (variables, options) => {
+  // Create once
+  if (!http) {
+    http = httpCreate({})
+  }
+
+  return new Runtime(variables, {
+    http,
+    ...options
+  })
+}
+
+// Start the monitor on targetRuntime
+const start = async (targetRuntime, options = {}) => {
+  // Debug
+  const {
+    port = process.env.PORT,
+    path = '_system'
+  } = options
+  console.log(`Monitor live at: http://localhost:${port}/${path}`)
+
+  // Start code based monitor
+  monitor({
+    targetRuntime,
+    ...options
+  })
 }
 
 module.exports = {
-  createRuntime,
+  create,
+  createRuntime: create,
+  load,
+  save,
+  loadComponents,
+  getComponentByType,
+  prettyNode,
+  getConnectedNodesOnPort,
+  start
 
-  // Start up REST & WebSocket for logging a runtime
-  async start (targetRuntime, {
-    logs = `${__dirname}/tmp`
-  } = {}) {
-    // Get the components of the target runtime
-    const targetComponents = targetRuntime.getComponents()
+  // async loadById (id, secret) {
+  //   const url = `http://localhost:1337/designs/${id}/${secret}`
 
-    // (Optional) Create tmp file for debugging
-    await targetRuntime.savePretty(targetComponents, `${logs}/components.json`)
+  //   // Load design file
+  //   const design = await axios.get(url).then(resp => resp.data)
+  //   return design
+  // },
 
-    // ============
-    // Monitor Server
-    // const { bus } = targetRuntime
-    // bus.onAny(function (event, value) {
-    //   // console.log(event, value)
-    //   // To Websocket
-    // })
-    // targetRuntime.bus.on('*', (payload) => {
-    //   console.log('cool', payload)
-    // })
-    // ============
-
-    // TODO: change core.json to not use filesystem ?
-    const design = targetRuntime.getDesign()
-    save(design, `${logs}/design.json`)
-
-    // ============
-    // Create monitor from design ( Yes, even for the core we use a lowoncode design )
-    // ============
-    // Inject these variable
-    const variables = {
-      targetRuntime
-    }
-    const runtime = createRuntime(variables)
-
-    // Load needed components for the core design
-    await runtime.loadComponents(`${__dirname}/components`)
-
-    // Load core design and run it and inject it with the targetRuntime
-    await runtime.loadAndRun(`${__dirname}/monitor.json`, targetRuntime)
-
-    // Setup REST monitor programmaticly
-    monitor({
-      runtime,
-      targetRuntime
-    })
-  }
 }

@@ -85,6 +85,7 @@
     {
       "id": "1563306263992",
       "component": "httproute",
+      "disabled": true,
       "name": "POST /_system/design",
       "x": 88,
       "y": 301,

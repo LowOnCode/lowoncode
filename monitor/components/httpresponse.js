@@ -17,7 +17,7 @@ module.exports = {
     on('data', (mixed, ctx) => {
       if (isCtx(mixed)) {
         mixed.body = mixed.body ? mixed.body : 'missing body'
-        ctx.next()
+        // ctx.next()
         return
       }
       // console.log('httpresponse', mixed)
