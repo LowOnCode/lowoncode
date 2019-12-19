@@ -51,7 +51,8 @@ const loadFromFile = async ({
   port,
   designFile,
   componentDirectory,
-  monitor
+  monitor,
+  strict = false
 } = {}) => {
   // set global env for PORT (IMPROVE)
   if (port !== undefined) process.env.PORT = port
@@ -74,7 +75,9 @@ const loadFromFile = async ({
   // All good, start server
   // ==============
   // Create a runtime instance
-  const runtime = lowoncode.create()
+  const runtime = lowoncode.create({}, {
+    strict
+  })
 
   // Load components
   await runtime.loadComponents(componentDirectory)
@@ -95,6 +98,17 @@ const loadFromFile = async ({
       }
     })
   }
+
+  // REPL
+  const repl = require('repl')
+
+  repl.start('> ').context.design = design
+  const r = repl.start('> ')
+  r.context.design = design
+  r.context.designFile = designFile
+  r.context.runtime = runtime
+  // Alias
+  r.context.c = runtime.allComponents
 }
 
 program
@@ -103,6 +117,7 @@ program
   .option('<file>', 'design file', './design.json')
   .option('-p, --port <port>', 'set port', 5000)
   .option('-m, --monitor', 'enables monitor')
+  .option('-s, --strict', 'enable strict modus, quit the process on faults')
   .option('-c, --components <components>', 'specify components directory', './components')
   .parse(process.argv)
 
@@ -112,5 +127,6 @@ loadFromFile({
   port: program.port,
   designFile: `${process.cwd()}/${program.args[0]}`,
   componentDirectory: `${process.cwd()}/${program.components}`,
-  monitor: program.monitor
+  monitor: program.monitor,
+  strict: program.strict
 })
