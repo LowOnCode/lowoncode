@@ -3,13 +3,21 @@
 const program = require('commander')
 const lowoncode = require('../index') // require('@lowoncode/runtime')
 
+// Needed for strict modus to quit the process
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  console.log('unhandledRejection', error)
+  // console.log('unhandledRejection', error.message)
+  process.exit()
+})
+
 program
   // .requiredOption('-f, --file', 'specify design file', 'design.json')
   .version('0.0.1', '-v, --version', 'outputs the version')
   .option('<file>', 'design file', './design.json')
   .option('-p, --port <port>', 'set port', 5000)
   .option('-m, --monitor', 'enables monitor')
-  .option('-s, --strict', 'enable strict modus, quit the process on faults')
+  .option('-s, --strict', 'enable strict modus, throws error on faults. If using in code you should handle the "unhandledRejection" event.')
   .option('-c, --components <components>', 'specify components directory', './components')
   .option('-r, --repl', 'enable REPL', false)
   .parse(process.argv)

@@ -45,7 +45,7 @@ module.exports = ({
       <h3><a href='/_system/nodes'>Nodes</a> (${runtime.nodes.length})</h3>
       ${prettyNodes(runtime.nodes)}
       <h3><a href='/_system/components'>Components</a> (${runtime.allComponents && runtime.allComponents.length})</h3>
-      ${prettyComponents(targetRuntime.allComponents, runtime.design.nodes)}
+      ${prettyComponents(targetRuntime.getAllComponentsFlat(), runtime.design.nodes)}
       `
     // <h3>Components (${runtime.allComponents && runtime.allComponents.length})</h3>
     const prettyNodes = arr => `
@@ -62,9 +62,10 @@ module.exports = ({
 
     const prettyComponents = (components = [], nodes = []) => `
       <table>
-      <tr><th>id</th><th>title</th><th>version</th><th>used</th></tr>
+      <tr><th>id</th><th>name</th><th>title</th><th>version</th><th>used</th></tr>
       ${components.map(item => `<tr>
       <td><small>${item.id}<small></td> 
+      <td><small>${item.name}<small></td> 
       <td>${item.title}</td>
       <td>${item.version}</td>
       <td>${nodes.filter(elem => elem.component === item.id).length}</td>
@@ -122,13 +123,18 @@ module.exports = ({
     console.log('Hotswapping new design')
     const design = ctx.request.body
 
-    const resp = await targetRuntime.run(design)
+    try {
+      const resp = await targetRuntime.run(design)
+      ctx.body = resp
 
-    // TODO Save ?
-    // HOOK: POST /design
-    onUpdate(design)
-
-    ctx.body = resp
+      // TODO Save ?
+      // HOOK: POST /design
+      onUpdate(design)
+    } catch (err) {
+      console.warn(err)
+      ctx.status = 400
+      ctx.body = err.message
+    }
   })
 
   // ========
@@ -146,6 +152,10 @@ module.exports = ({
   // components
   // ========
   router.get('/components', (ctx, next) => {
+    ctx.body = targetRuntime.getAllComponentsFlat()
+  })
+
+  router.get('/components/tree', (ctx, next) => {
     ctx.body = targetRuntime.allComponents
   })
 

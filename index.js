@@ -13,7 +13,8 @@ const {
   getConnectedNodesOnPort
 } = require('./lib/utils')
 
-// Create a single http server ( to support hosting environments that use process.env.PORT )
+// Create a single http server
+// ( to support hosting environments that use one port, process.env.PORT )
 let http = null
 
 // Factory
@@ -81,7 +82,8 @@ const loadFromFile = async ({
   }
 
   // Debug
-  console.log(`...done. Design contains ${design.nodes.length} nodes`)
+  console.log(`...done.`)
+  console.log(`Design contains ${design.nodes.length} nodes`)
 
   // ==============
   // All good, start server
@@ -93,6 +95,10 @@ const loadFromFile = async ({
 
   // Load components
   await runtime.loadComponents(componentDirectory)
+
+  // Debug
+  console.log(`Design contains ${runtime.allComponents.length} components:`)
+  console.log(runtime.allComponents.map(elem => `${elem.name}@${elem.version}`))
 
   // Load core components
   // await runtime.loadComponents(`${__dirname}/../components`)
