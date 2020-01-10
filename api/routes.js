@@ -1,8 +1,3 @@
-// =============
-// Programmatic  Monitor
-// =============
-const koarouter = require('koa-router')
-
 const getCircularReplacer = () => {
   const seen = new WeakSet()
   return (key, value) => {
@@ -16,16 +11,14 @@ const getCircularReplacer = () => {
   }
 }
 
-module.exports = ({
-  targetRuntime,
-  path = '/_system',
-  onUpdate = () => {}
-}) => {
-  const { app } = targetRuntime.tools.http
-
-  const router = koarouter({
-    prefix: path // or '/api'
-  })
+module.exports = (router, settings = {}) => {
+  // Destructure settings
+  const {
+    targetRuntime = {},
+    prefix = '/',
+    path = '/_system',
+    onUpdate = () => {}
+  } = settings
 
   // ========
   router.get('/', (ctx, next) => {
@@ -40,37 +33,37 @@ module.exports = ({
     // Renderers
     // ==============
     const prettyRuntime = runtime => ` 
-      <h2>${runtime.design.title}</h2>
-      <small>v ${runtime.design.version} by ${runtime.design.author}</small>
-      <h3><a href='/_system/nodes'>Nodes</a> (${runtime.nodes.length})</h3>
-      ${prettyNodes(runtime.nodes)}
-      <h3><a href='/_system/components'>Components</a> (${runtime.allComponents && runtime.allComponents.length})</h3>
-      ${prettyComponents(targetRuntime.getAllComponentsFlat(), runtime.design.nodes)}
-      `
+       <h2>${runtime.design.title}</h2>
+       <small>v ${runtime.design.version} by ${runtime.design.author}</small>
+       <h3><a href='/_system/nodes'>Nodes</a> (${runtime.nodes.length})</h3>
+       ${prettyNodes(runtime.nodes)}
+       <h3><a href='/_system/components'>Components</a> (${runtime.allComponents && runtime.allComponents.length})</h3>
+       ${prettyComponents(targetRuntime.getAllComponentsFlat(), runtime.design.nodes)}
+       `
     // <h3>Components (${runtime.allComponents && runtime.allComponents.length})</h3>
     const prettyNodes = arr => `
-      <table>
-      <tr><th>id</th><th>name</th><th>connections</th><th>component</th><th>status</th></tr>
-      ${arr.map(item => `<tr>
-      <td><small><a href='${systemRootUrl}/nodes/${item.id}'>${item.id}</a><small></td> 
-      <td>${item.name}</td>
-      <td>${item.connections && item.connections.length}</td>
-      <td>${item.component}</td>
-      <td>${item.status}</td>
-      </tr>`).join('')}
-      </table>`
+       <table>
+       <tr><th>id</th><th>name</th><th>connections</th><th>component</th><th>status</th></tr>
+       ${arr.map(item => `<tr>
+       <td><small><a href='${systemRootUrl}/nodes/${item.id}'>${item.id}</a><small></td> 
+       <td>${item.name}</td>
+       <td>${item.connections && item.connections.length}</td>
+       <td>${item.component}</td>
+       <td>${item.status}</td>
+       </tr>`).join('')}
+       </table>`
 
     const prettyComponents = (components = [], nodes = []) => `
-      <table>
-      <tr><th>id</th><th>name</th><th>title</th><th>version</th><th>used</th></tr>
-      ${components.map(item => `<tr>
-      <td><small>${item.id}<small></td> 
-      <td><small>${item.name}<small></td> 
-      <td>${item.title}</td>
-      <td>${item.version}</td>
-      <td>${nodes.filter(elem => elem.component === item.id).length}</td>
-      </tr>`).join('')}
-      </table>`
+       <table>
+       <tr><th>id</th><th>name</th><th>title</th><th>version</th><th>used</th></tr>
+       ${components.map(item => `<tr>
+       <td><small>${item.id}<small></td> 
+       <td><small>${item.name}<small></td> 
+       <td>${item.title}</td>
+       <td>${item.version}</td>
+       <td>${nodes.filter(elem => elem.component === item.id).length}</td>
+       </tr>`).join('')}
+       </table>`
 
     // ==============
     // Body
@@ -79,14 +72,14 @@ module.exports = ({
     // console.log(targetRuntime.allComponents)
 
     const template = `
-      <h1>All routes</h1>
-      <ul>
-      ${routes.map(elem => `<li>${elem.methods}<a href="${elem.path}">${elem.path}</a></li>`).join('')}
-      </ul>
-
-      <h1>Running designs</h1>
-      ${prettyRuntime(targetRuntime)}
-      `
+       <h1>All routes</h1>
+       <ul>
+       ${routes.map(elem => `<li>${elem.methods}<a href="${elem.path}">${elem.path}</a></li>`).join('')}
+       </ul>
+  
+       <h1>Running designs</h1>
+       ${prettyRuntime(targetRuntime)}
+       `
 
     // OUTPUT
     ctx.body = template
@@ -162,26 +155,4 @@ module.exports = ({
   router.get('/components/:id', (ctx, next) => {
     ctx.body = targetRuntime.findNodeById(ctx.params.id)
   })
-
-  // ========
-  // Websocket server
-  // ========
-  const wsserver = require('./components/wsservercore')
-  wsserver.created({
-    tools: targetRuntime.tools,
-    log (...args) { console.log(...args) },
-    on (event, cb) {
-      if (event === 'data:0') {
-        cb(targetRuntime)
-      }
-    },
-    options: {
-      // port: process.env.PORT,
-      // port: 5050,
-      path: `${path}/ws`
-    },
-    status (...args) { console.log(...args) }
-  })
-
-  app.use(router.routes())
 }

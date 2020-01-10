@@ -10,7 +10,7 @@ const stringTemplateParser = (expression, valueObj = {}) => {
 module.exports = {
   name: 'template',
   description: `A very simple template parser`,
-  version: '0.0.1',
+  version: '0.0.2',
   color: '#5D9CEC',
   icon: 'file-text-o',
   inputs: [
@@ -34,11 +34,11 @@ module.exports = {
     template: { type: 'string', default: '<h1>Hello {{request}}</h1>' }
   },
   mounted: ({ send, on, options }) => {
-    on('data', (incoming) => {
-      console.log(incoming)
-      console.log(options)
+    on('data', (message) => {
+      // console.log(message)
+      // console.log(options)
 
-      const context = incoming
+      const context = message
       const { template } = options
       // TODO: process template
       const parsed = stringTemplateParser(template, context.request)
@@ -47,8 +47,8 @@ module.exports = {
       // send(0, parsed)
 
       // TODO: come up with something to pass ctx
-      incoming.body = parsed
-      send(0, incoming)
+      message.set(parsed)
+      send(0, message)
     })
   }
 }

@@ -3,9 +3,9 @@
  */
 const Runtime = require('./lib/Runtime')
 const httpCreate = require('./lib/http')
-const monitor = require('./monitor')
+const monitor = require('./api/monitor')
 const {
-  load,
+  loadFile,
   save,
   loadComponents,
   getComponentByType,
@@ -15,23 +15,44 @@ const {
 
 // Create a single http server
 // ( to support hosting environments that use one port, process.env.PORT )
-let http = null
+let server = null
+let app = null
 
+// ============
 // Factory
-const create = (variables, options) => {
-  // Create once
-  if (!http) {
-    http = httpCreate({})
+// ============
+const setServer = (_value) => {
+  server = _value
+}
+const setApp = (_value) => {
+  app = _value
+}
+
+// Create new Runtime ( & server if needed )
+const create = (variables = {}, options = {}) => {
+  // auto create server & only one server
+  if (!server) {
+    const { app, server } = httpCreate()
+    setServer(server)
+    setApp(app)
   }
 
-  return new Runtime(variables, {
-    http,
+  // const Koa = require('koa')
+  // const app = new Koa()
+
+  // Create new Runtime
+  const runtime = new Runtime(variables, {
+    server,
+    app, // DEPRECATE ?
+    // router,
     ...options
   })
+
+  return runtime
 }
 
 // Start the monitor on targetRuntime
-const start = async (targetRuntime, options = {}) => {
+const startMonitor = async (targetRuntime, options = {}) => {
   // Debug
   const {
     port = process.env.PORT,
@@ -40,10 +61,14 @@ const start = async (targetRuntime, options = {}) => {
   console.log(`Monitor live at: http://localhost:${port}/${path}`)
 
   // Start code based monitor
-  monitor({
+  const router = monitor({
     targetRuntime,
     ...options
   })
+
+  // Attach router (koa)
+  const { app } = targetRuntime
+  app.use(router.routes())
 }
 
 const validate = design => {
@@ -59,26 +84,27 @@ const validate = design => {
   return validate.errors
 }
 
-const loadFromFile = async ({
-  port,
-  designFile = `${process.cwd()}/design.json`,
-  componentDirectory = `${process.cwd()}/components`,
-  monitor,
-  strict = false,
-  repl = false
-} = {}) => {
+const load = async (
+  design = { nodes: [] },
+  settings = {}
+) => {
+  const {
+    port,
+    componentDirectory = `${process.cwd()}/components`,
+    repl = false
+  } = settings
+
+  // console.log('settings', settings)
+
   // set global env for PORT (IMPROVE)
   if (port !== undefined) process.env.PORT = port
-
-  // Load design file
-  console.log(`Loading design from : ${designFile}`)
-  const design = await load(designFile)
 
   // Validate
   const errors = validate(design)
   if (errors) {
     console.log(errors)
-    return // kill process
+    // kill process
+    return
   }
 
   // Debug
@@ -89,15 +115,13 @@ const loadFromFile = async ({
   // All good, start server
   // ==============
   // Create a runtime instance
-  const runtime = create({}, {
-    strict
-  })
+  const runtime = create({}, settings)
 
   // Load components
   await runtime.loadComponents(componentDirectory)
 
   // Debug
-  console.log(`Design contains ${runtime.allComponents.length} components:`)
+  console.log(`The following ${runtime.allComponents.length} components are available:`)
   console.log(runtime.allComponents.map(elem => `${elem.name}@${elem.version}`))
 
   // Load core components
@@ -106,82 +130,103 @@ const loadFromFile = async ({
   // Start the engine
   await runtime.run(design)
 
-  // (Optional) Start monitor on our design
-  if (monitor) {
-    await start(runtime, {
-      onUpdate (design) {
-        console.log(`Saving design to file: ${designFile}`)
-        // console.log(design)
-        save(design, designFile)
-      }
-    })
-  }
-
   // REPL
   if (repl) {
     const repl = require('repl')
     repl.start('> ').context.design = design
     const r = repl.start('> ')
     r.context.design = design
-    r.context.designFile = designFile
+    // r.context.designFile = designFile
     r.context.runtime = runtime
     // Alias
     r.context.c = runtime.allComponents
   }
 
-  return true
+  return runtime
 }
 
-// const loadFromRemote = async ({
-//   port,
-//   designFile
-// } = {}) => {
-//   // set global env for PORT (IMPROVE)
-//   if (port !== undefined) process.env.PORT = port
+const loadFromFile = async (
+  designFile = `${process.cwd()}/design.json`,
+  settings = {}
+) => {
+  // Destructure settings
+  const {
+    port,
+    monitor
+  } = settings
 
-//   // Not our business but sometimes needed
-//   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+  // set global env for PORT (IMPROVE)
+  if (port !== undefined) process.env.PORT = port
 
-//   if (!designFile) {
-//     throw new Error('Please set the DESIGN env!')
-//   }
+  // Load design file
+  console.log(`Loading design from : ${designFile}`)
+  const design = await loadFile(designFile)
 
-//   // ==========
-//   // Load design file: local or remote
-//   // ==========
-//   console.log(`Fetching design from : ${designUrl}`)
-//   const axios = require('axios')
-//   const DESIGN_ID = process.env.DESIGN_ID || '5d98e3a19a33d6001711aaec' // < Remove defaults
-//   const DESIGN_SECRET = process.env.DESIGN_SECRET || 'supersecret'
-//   const designUrl = `http://localhost:1337/designs/${DESIGN_ID}/${DESIGN_SECRET}`
-//   const design = await axios.get(designUrl).then(resp => resp.data)
+  const runtime = await load(design, settings)
 
-//   // Debug
-//   console.log(`...done. Design contains ${data.nodes.length} nodes`)
+  // (Optional) Start monitor on our design
+  if (monitor) {
+    await startMonitor(runtime, {
+      ...settings,
+      onUpdate (design) {
+        console.log(`Saving design to file: ${designFile}`)
+        save(design, designFile)
+      }
+    })
+  }
+}
 
-//   // All good, start server
-//   serve(data)
-// }
-
-const lowoncode = {
+module.exports = {
   create,
   createRuntime: create,
   load,
+
+  setServer,
+  setApp,
+
+  start: async (design = {}, settings = {}) => {
+    // Destructure settings
+    const {
+      monitor,
+      prefix,
+      apiKey
+    } = settings
+
+    // Create new runtime instance from design and settings
+    const runtime = await load(design, settings)
+
+    // (Optional) Start monitor on our design
+    if (monitor) {
+      await startMonitor(runtime, {
+        // ...settings, // path, port, ..
+        apiKey,
+        path: `${prefix}/_system`,
+        onUpdate (design) {
+          console.log('TODO')
+          // console.log(`Saving design to file: ${designFile}`)
+          // save(design, designFile)
+        }
+      })
+    }
+
+    // Return
+    return runtime
+  },
+
+  // Proxy utils.js
+  loadFile,
   save,
   loadComponents,
   getComponentByType,
   prettyNode,
   getConnectedNodesOnPort,
-  start,
-  loadFromFile
+  startMonitor,
+  loadFromFile,
 
-  // async loadById (id, secret) {
-  //   const url = `http://localhost:1337/designs/${id}/${secret}`
+  // Expose Classes
+  Runtime,
 
-  //   // Load design file
-  //   const design = await axios.get(url).then(resp => resp.data)
-  //   return design
-  // },
+  // Create http server
+  httpCreate,
+  createRouter: require('koa-router')
 }
-
-module.exports = lowoncode

@@ -22,18 +22,18 @@ module.exports = {
     size: { type: 'number', default: 5 },
     cacheexpire: { type: 'number', default: '5 minutes' },
     cachepolicy: { type: 'number', default: 0 },
-    timeout: { type: 'number', default: 5 }
+    timeout: { type: 'number', default: 2000, description: 'Time in seconds' }
   },
 
   outputs: [
     {
       color: '#6BAD57',
       description: `ctx`
-    },
-    {
-      color: '#F6BB42',
-      description: `body`
     }
+    // {
+    //   color: '#F6BB42',
+    //   description: `body`
+    // }
   ],
   inputs: [],
 
@@ -41,7 +41,7 @@ module.exports = {
   // Lifecycle hooks
   // ==========
   beforeDestroy ({ tools, ...instance }) {
-    const router = tools.http.router
+    const { router } = tools
 
     // Clear route
     const name = `httproute-${instance.id}`
@@ -50,20 +50,25 @@ module.exports = {
     r.splice(index, 1)
   },
 
-  created  ({ log, fetch, state, tools, send, id, options, ...instance }) {
+  created ({ tools, Message, send, id, options, setStatus }) {
+    const { router } = tools
+
+    // console.log(router)
+
     const reconfigure = () => {
       if (!options.url) {
-        instance.status('Not configured', 'red')
+        setStatus('Not configured', 'red')
         return
       }
 
-      const router = tools.http.router
       const { method = 'GET' } = options
 
       const handle = async (ctx, next) => {
         // Timeout
+        // console.log(options.timeout)
+
         var promise1 = new Promise(function (resolve, reject) {
-          setTimeout(resolve, 5000, 'one')
+          setTimeout(resolve, options.timeout, 'one')
         })
 
         // Try node chain
@@ -76,8 +81,14 @@ module.exports = {
         })
 
         // Send to nodechain
-        send(0, ctx)
-        send(1, ctx.body, ctx)
+        const message = new Message()
+        message.getContext = () => {
+          return ctx
+        }
+        send(0, message)
+        // send(0, ctx)
+        // send(0, new Message(ctx))
+        // send(1, ctx.body, ctx)
 
         // Wait on timeout or get response from the node chain
         await Promise.race([promise1, promise2]).then(function (value) {

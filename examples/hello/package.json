@@ -1,0 +1,12 @@
+{
+  "name": "hello",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lowoncode ./design.json --monitor --port 5678 -c ../components"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

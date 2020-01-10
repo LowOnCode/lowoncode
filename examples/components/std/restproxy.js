@@ -73,7 +73,7 @@ module.exports = {
       }
 
       // console.log(options)
-      const router = tools.http.router
+      const { router } = tools
       router.get(`restproxy-${instance.id}`, options.url, async (ctx, next) => {
         state.beg = new Date()
 

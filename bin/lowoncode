@@ -15,8 +15,10 @@ program
   // .requiredOption('-f, --file', 'specify design file', 'design.json')
   .version('0.0.1', '-v, --version', 'outputs the version')
   .option('<file>', 'design file', './design.json')
+  .option('-pre, --prefix <path>', 'set prefix', '/')
   .option('-p, --port <port>', 'set port', 5000)
   .option('-m, --monitor', 'enables monitor')
+  .option('-o, --open', 'opens the designer tool', 'https://lowoncode.com/designer')
   .option('-s, --strict', 'enable strict modus, throws error on faults. If using in code you should handle the "unhandledRejection" event.')
   .option('-c, --components <components>', 'specify components directory', './components')
   .option('-r, --repl', 'enable REPL', false)
@@ -24,11 +26,14 @@ program
 
 // console.log(`Cwd: ${process.cwd()}`)
 
-lowoncode.loadFromFile({
-  port: program.port,
-  designFile: `${process.cwd()}/${program.args[0]}`,
-  componentDirectory: `${process.cwd()}/${program.components}`,
-  monitor: program.monitor,
-  strict: program.strict,
-  repl: program.repl
-})
+lowoncode.loadFromFile(
+  `${process.cwd()}/${program.args[0]}`,
+  {
+    port: program.port,
+    prefix: program.prefix,
+    componentDirectory: `${process.cwd()}/${program.components}`,
+    monitor: program.monitor,
+    strict: program.strict,
+    open: program.open,
+    repl: program.repl
+  })
