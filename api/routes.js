@@ -1,3 +1,8 @@
+/**
+ * Monitor REST API
+ *
+ */
+
 const getCircularReplacer = () => {
   const seen = new WeakSet()
   return (key, value) => {
@@ -14,18 +19,19 @@ const getCircularReplacer = () => {
 module.exports = (router, settings = {}) => {
   // Destructure settings
   const {
-    targetRuntime = {},
-    prefix = '/',
-    path = '/_system',
-    onUpdate = () => {}
+    targetRuntime = null,
+    onUpdate = () => {},
+    systemRootUrl = '/_system' // Presentation only
   } = settings
+
+  if (!targetRuntime) throw new Error('targetRuntime is required')
 
   // ========
   router.get('/', (ctx, next) => {
     const routes = ctx.router.stack
     // .map(i => `${i.methods} ${i.path}`)
 
-    const systemRootUrl = '/_system'
+    // const systemRootUrl = '/_system'
 
     // const targetRuntime = variables[options.key || 'targetRuntime']
 
@@ -111,9 +117,9 @@ module.exports = (router, settings = {}) => {
     ctx.body = resp
   })
 
-  // Hotswap & save ?
+  // save
   router.post('/design', async (ctx, next) => {
-    console.log('Hotswapping new design')
+    console.log('save new design')
     const design = ctx.request.body
 
     try {

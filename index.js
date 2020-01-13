@@ -16,7 +16,9 @@ const {
 // Create a single http server
 // ( to support hosting environments that use one port, process.env.PORT )
 let server = null
-let app = null
+
+const Koa = require('koa')
+let app = new Koa()
 
 // ============
 // Factory
@@ -51,8 +53,10 @@ const create = (variables = {}, options = {}) => {
   return runtime
 }
 
-// Start the monitor on targetRuntime
+// Start the monitor on targetRuntime: rest api + websocket
 const startMonitor = async (targetRuntime, options = {}) => {
+  if (!targetRuntime) throw new Error('targetRuntime is required')
+
   // Debug
   const {
     port = process.env.PORT,
@@ -60,7 +64,7 @@ const startMonitor = async (targetRuntime, options = {}) => {
   } = options
   console.log(`Monitor live at: http://localhost:${port}/${path}`)
 
-  // Start code based monitor
+  // Start code based websocket monitor
   const router = monitor({
     targetRuntime,
     ...options
@@ -84,6 +88,13 @@ const validate = design => {
   return validate.errors
 }
 
+/**
+ * Load a design
+ *
+ * @param {*} [design={ nodes: [] }]
+ * @param {*} [settings={}]
+ * @returns runtime
+ */
 const load = async (
   design = { nodes: [] },
   settings = {}
@@ -91,10 +102,9 @@ const load = async (
   const {
     port,
     componentDirectory = `${process.cwd()}/components`,
-    repl = false
+    repl = false,
+    verbose = true
   } = settings
-
-  // console.log('settings', settings)
 
   // set global env for PORT (IMPROVE)
   if (port !== undefined) process.env.PORT = port
@@ -107,10 +117,6 @@ const load = async (
     return
   }
 
-  // Debug
-  console.log(`...done.`)
-  console.log(`Design contains ${design.nodes.length} nodes`)
-
   // ==============
   // All good, start server
   // ==============
@@ -121,8 +127,10 @@ const load = async (
   await runtime.loadComponents(componentDirectory)
 
   // Debug
-  console.log(`The following ${runtime.allComponents.length} components are available:`)
-  console.log(runtime.allComponents.map(elem => `${elem.name}@${elem.version}`))
+  if (verbose) {
+    console.log(`The following ${runtime.allComponents.length} components are available:`)
+    console.log(runtime.allComponents.map(elem => `${elem.name}@${elem.version}`))
+  }
 
   // Load core components
   // await runtime.loadComponents(`${__dirname}/../components`)
@@ -145,6 +153,12 @@ const load = async (
   return runtime
 }
 
+/**
+ * Load a design from a file
+ *
+ * @param {string} [designFile=`${process.cwd()}/design.json`]
+ * @param {*} [settings={}]
+ */
 const loadFromFile = async (
   designFile = `${process.cwd()}/design.json`,
   settings = {}
@@ -176,6 +190,42 @@ const loadFromFile = async (
   }
 }
 
+/**
+ * Starts up a design
+ *
+ * @param {*} [design={}]
+ * @param {*} [settings={}]
+ * @returns runtime
+ */
+const start = async (design = {}, settings = {}) => {
+  // Destructure settings
+  const {
+    monitor,
+    prefix,
+    apiKey
+  } = settings
+
+  // Create new runtime instance from design and settings
+  const runtime = await load(design, settings)
+
+  // (Optional) Start monitor on our design
+  if (monitor) {
+    await startMonitor(runtime, {
+      // ...settings, // path, port, ..
+      apiKey,
+      path: `${prefix}/_system`,
+      onUpdate (design) {
+        console.log('TODO')
+        // console.log(`Saving design to file: ${designFile}`)
+        // save(design, designFile)
+      }
+    })
+  }
+
+  // Return
+  return runtime
+}
+
 module.exports = {
   create,
   createRuntime: create,
@@ -184,34 +234,7 @@ module.exports = {
   setServer,
   setApp,
 
-  start: async (design = {}, settings = {}) => {
-    // Destructure settings
-    const {
-      monitor,
-      prefix,
-      apiKey
-    } = settings
-
-    // Create new runtime instance from design and settings
-    const runtime = await load(design, settings)
-
-    // (Optional) Start monitor on our design
-    if (monitor) {
-      await startMonitor(runtime, {
-        // ...settings, // path, port, ..
-        apiKey,
-        path: `${prefix}/_system`,
-        onUpdate (design) {
-          console.log('TODO')
-          // console.log(`Saving design to file: ${designFile}`)
-          // save(design, designFile)
-        }
-      })
-    }
-
-    // Return
-    return runtime
-  },
+  start,
 
   // Proxy utils.js
   loadFile,
@@ -220,8 +243,11 @@ module.exports = {
   getComponentByType,
   prettyNode,
   getConnectedNodesOnPort,
-  startMonitor,
   loadFromFile,
+
+  // API's
+  startRestApi: require('./api/routes'),
+  startMonitor,
 
   // Expose Classes
   Runtime,

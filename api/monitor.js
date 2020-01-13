@@ -12,6 +12,7 @@ module.exports = (settings = {}) => {
     apiKey = '',
     // (Leave empty = no Protection) Secret key for authorization,
     // needed to be set as header "Authorization: apiKey XXX"
+    // enableRestApi = true, // Starts up an restapi server
     enableMonitor = false // Starts up an websocket server
     // onUpdate = () => {}
   } = settings
