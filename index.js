@@ -17,6 +17,7 @@ const {
 // ( to support hosting environments that use one port, process.env.PORT )
 let server = null
 
+// Default .. TODO MORE JIT
 const Koa = require('koa')
 let app = new Koa()
 
@@ -227,6 +228,12 @@ const start = async (design = {}, settings = {}) => {
 }
 
 module.exports = {
+  // State
+  version: require('./package.json').version,
+  app,
+  server,
+
+  // Methods
   create,
   createRuntime: create,
   load,
