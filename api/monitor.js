@@ -1,7 +1,7 @@
 // =============
 // Programmatic  Monitor
 // =============
-const koarouter = require('koa-router')
+const koarouter = require('@koa/router')
 const installMonitorRoutes = require('./routes')
 
 module.exports = (settings = {}) => {

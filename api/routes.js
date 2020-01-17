@@ -20,19 +20,20 @@ module.exports = (router, settings = {}) => {
   // Destructure settings
   const {
     targetRuntime = null,
-    onUpdate = () => {},
-    systemRootUrl = '/_system' // Presentation only
+    onUpdate = () => {}
+    // systemRootUrl = '/_system' // Presentation only
   } = settings
 
   if (!targetRuntime) throw new Error('targetRuntime is required')
+
+  // Get prefix from router
+  const systemRootUrl = router.opts.prefix
+  // console.log(router)
 
   // ========
   router.get('/', (ctx, next) => {
     const routes = ctx.router.stack
     // .map(i => `${i.methods} ${i.path}`)
-
-    // const systemRootUrl = '/_system'
-
     // const targetRuntime = variables[options.key || 'targetRuntime']
 
     // ==============
@@ -79,6 +80,7 @@ module.exports = (router, settings = {}) => {
 
     const template = `
        <h1>All routes</h1>
+       <a href="${systemRootUrl}/routes">View as JSON</a>
        <ul>
        ${routes.map(elem => `<li>${elem.methods}<a href="${elem.path}">${elem.path}</a></li>`).join('')}
        </ul>
@@ -161,4 +163,14 @@ module.exports = (router, settings = {}) => {
   router.get('/components/:id', (ctx, next) => {
     ctx.body = targetRuntime.findNodeById(ctx.params.id)
   })
+
+  // ========
+  // RPC
+  // ========
+  router.get('/restart', async (ctx, next) => {
+    await targetRuntime.restart()
+    ctx.body = 'ok'
+  })
+
+  return router
 }

@@ -90,7 +90,7 @@ const validate = design => {
 }
 
 /**
- * Load a design
+ * Load a design and create a runtime instance
  *
  * @param {*} [design={ nodes: [] }]
  * @param {*} [settings={}]
@@ -133,25 +133,25 @@ const load = async (
     console.log(runtime.allComponents.map(elem => `${elem.name}@${elem.version}`))
   }
 
-  // Load core components
-  // await runtime.loadComponents(`${__dirname}/../components`)
-
   // Start the engine
   await runtime.run(design)
 
   // REPL
   if (repl) {
-    const repl = require('repl')
-    repl.start('> ').context.design = design
-    const r = repl.start('> ')
-    r.context.design = design
-    // r.context.designFile = designFile
-    r.context.runtime = runtime
-    // Alias
-    r.context.c = runtime.allComponents
+    attachRepl(runtime)
   }
 
   return runtime
+}
+
+const attachRepl = (runtime) => {
+  const repl = require('repl')
+  repl.start('> ')
+  const r = repl.start('> ')
+  // Provide context
+  // r.context.design = design
+  r.context.runtime = runtime
+  r.context.c = runtime.allComponents
 }
 
 /**
@@ -260,6 +260,6 @@ module.exports = {
   Runtime,
 
   // Create http server
-  httpCreate,
-  createRouter: require('koa-router')
+  httpCreate
+  // createRouter: require('koa-router')
 }
