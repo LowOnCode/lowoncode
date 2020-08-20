@@ -1,22 +1,9 @@
 # Introduction
-LowOnCode is the open source NodeJs runtime for running LowOnCode designs. With the online designer application you can create, monitor and improve desigs ( https://lowoncode.com/designer ). The design first methology makes development a breeze, deployments unbreakable and monitoring comes out of the box.
+LowOnCode is the open source NodeJs runtime for running LowOnCode designs. The designer application let's create, monitor and improve designs that can be run with this runtime . The design first methology makes development a breeze, deployments unbreakable and monitoring comes out of the box.
+( https://lowoncode.com/designer )
 
 ## Documentation
 https://lowoncode.github.io/lowoncode/docs/#/
-
-## Setup
-
-``` bash
-# install dependencies
-npm install
-
-# start server for development
-# (auto-restart on changes, thanks to nodemon)
-npm run dev
-
-# start server for production (no auto-restart)
-npm run start
-```
 
 ## Usage (CLI)
 ```

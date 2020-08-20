@@ -5,7 +5,6 @@
   "author": "Jelle",
   "license": "MIT",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node -r dotenv/config ./examples/remote.js",
     "docs": "browser-sync docs -w",
