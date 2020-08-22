@@ -15,7 +15,7 @@ Options:
   -p, --port <port>              set port (default: 5000)
   -m, --monitor                  enables monitor
   -s, --strict                   enable strict modus, quit the process on faults
-  -c, --components <components>  specify components directory (default: "./components")
+  -c, --components <components>  specify the directory of components (default: "./components")
   -h, --help                     output usage information
 ```
 

@@ -6,10 +6,9 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config ./examples/remote.js",
-    "docs": "browser-sync docs -w",
-    "dev": "DEBUG=warn,info nodemon -r dotenv/config ./examples/remote.js",
-    "dev:fromfile": "nodemon -r dotenv/config ./examples/fromfile.js"
+    "start": "lowoncode ./examples/hello/design.json --monitor --port 5678 -c components",
+    "dev": "nodemon --exec npm start",
+    "docs": "browser-sync docs -w"
   },
   "nodemonConfig": {
     "ignore": [
