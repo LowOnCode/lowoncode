@@ -17,7 +17,7 @@ program
   .option('<file>', 'design file', './design.json')
   .option('-pre, --prefix <path>', 'set prefix', '/')
   .option('-p, --port <port>', 'set port', 5000)
-  .option('-m, --monitor', 'enables monitor')
+  .option('-m, --monitor', 'enables monitor', true)
   .option('-o, --open', 'opens the designer tool', 'https://lowoncode.com/designer')
   .option('-s, --strict', 'enable strict modus, throws error on faults. If using in code you should handle the "unhandledRejection" event.')
   .option('-c, --components <components>', 'specify components directory', './components')
