@@ -1,11 +1,11 @@
 {
-  "name": "hello",
+  "name": "component",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec npm start",
-    "start": "lowoncode ./design.json --monitor --port 5678 -c ../../components"
+    "start": "npx nodemon",
+    "dev": "npx nodemon"
   },
   "keywords": [],
   "author": "",
