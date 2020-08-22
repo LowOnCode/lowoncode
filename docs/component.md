@@ -1,15 +1,16 @@
 # Introduction
-A component serves as a blueprint to create nodes.
+A component serves as a blueprint to create a node.
 
-# Creating your first component
-To create a component best is to start with making a copy of the `hello` components below. Just place it in the folder called `/components`. If you run the instance in dev modus it will automaticly refresh and pick up your newly created component.
+# Your first component
+To create your first component start by making a copy of the `hello` components below. Place it in a folder e.g.  `components`.
 
 # Component in depth
-See below a simple component. It consists of one `input` and one `output` and a `props` field which can be used to control the `options` that are availible in your code.
+The below component consists of one `input` and one `output` and a `props` field which can be used to control the `options` that are availible in your code.
 
-The magic happens what you specify in the lifecycle function `created` or `mounted`. There is a slight different between both function. As in the `created` you aren't able to `send` out messages as the other component aren't most likely not initialized. Therefor we suggest to use `mounted` lifecycle function to start coding.
+The magic happens in the lifecycle function called `mounted`. 
+> Note: There is also a `created` method which will be called during the creation yet you won't be able to directly `send` out messages as the other component are most likely not initialized yet.
 
-The `mounted` function is being called with some `context` which you can use in your component. In the example below we destructure the `context` directly.
+The `mounted` function is being called with `context` which you can use in your component. In the example below we destructure the `context` directly.
 
 The `on` and `send` functions are at the heart of the system. With the `on` function you can listen to incoming messages. 
 And with the `send` function you can send a `payload` to the connected components on a certain `port`.
@@ -49,7 +50,7 @@ module.exports = {
 ```
 
 # Connections
-The inputs and outputs define what data flows in or out the component. See below an example:
+The `inputs` and `outputs` define the data flows in and out the component. See below an example:
 ```js
 [
    inputs: [
@@ -102,8 +103,16 @@ The following methods can be used to control a proper lifecycle:
 - `mounted` ( called when all components have been created )
 - `beforeDestroy` ( called when a component has been removed )
 
+# Logging
+To capture log messages in components, add the `console` context, as below. Then call `console.log`
+```js
+mounted: ({ console }) => {
+  console.log('Test')
+}
+```
+
 # Context
-All lifecycle methods are provided with a context. This context consist of some functions to interact with other nodes like :
+All lifecycle methods are provided with context. This context consist of some functions to interact with other nodes like :
 - The `send` function to send data.
 - The `bus` function to listen to events.
 - The `options` object contains the data that has been set in the node (or the default values). 
@@ -113,6 +122,9 @@ All lifecycle methods are provided with a context. This context consist of some 
 Available events are:
 - `data` will always trigger on incoming data.
 - `data:<port>`, e.g. `data:2` is only triggered on incoming data on a certain port. 
+
+
+
 
 # State
 
@@ -132,8 +144,8 @@ mounted: ({ send, on, options }) => {
 ```
 
 # Component resolving
-The runtime will parse all top level files as components and sub directories containing a index.js as components.
-Loading components can be done with:
+Components can be added with the following function:
 ```js
 await runtime.addComponents(`${__dirname}/components`)
 ```
+This will resolve all `.js` files and sub directories containing an `index.js` as components.
