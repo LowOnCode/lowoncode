@@ -13,7 +13,6 @@ module.exports = {
     }],
   mounted ({ on }) {
     on('data:0', async (message) => {
-      console.log('COOL', message)
       // Validation
       if (!message.getContext) {
         // Message to the void (IMPROVE)

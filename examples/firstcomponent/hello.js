@@ -24,6 +24,12 @@ module.exports = {
     enabled: { type: 'bool', default: true }
   },
 
+  // Called when component is being destroyed
+  beforeDestroy ({ console }) {
+    console.log('bye')
+  },
+
+  // Called when component is created
   mounted: ({ setTimeout, console, send, watch, options }) => {
     console.log('Hello created')
 

@@ -2,12 +2,11 @@
 A component serves as a blueprint to create a node.
 
 # Your first component
-To create your first component start by making a copy of the `hello` components below. Place it in a folder e.g.  `components`.
+To create your first component start by making a copy of the `hello` components below.
 
-# Component in depth
-The below component consists of one `input` and one `output` and a `props` field which can be used to control the `options` that are availible in your code.
+The component below consists of one `input` and one `output` and a `props` field.
 
-The magic happens in the lifecycle function called `mounted`. 
+The magic starts in the lifecycle function called `mounted`. 
 > Note: There is also a `created` method which will be called during the creation yet you won't be able to directly `send` out messages as the other component are most likely not initialized yet.
 
 The `mounted` function is being called with `context` which you can use in your component. In the example below we destructure the `context` directly.
@@ -49,30 +48,33 @@ module.exports = {
 }
 ```
 
-# Connections
+# Naming
+...
+
+# Connection
 The `inputs` and `outputs` define the data flows in and out the component. See below an example:
 ```js
 [
    inputs: [
       {
         color: '#666D77',
-        description: `object`,
+        description: `description here`,
         type: 'object'
-        name: 'object',
+        name: 'in1',
       }
     ]
     outputs: [
       {
         color: '#666D77',
-        description: `object`,
+        description: `description here`,
         type: 'object'
-        name: 'object',
+        name: 'out1',
       }
     ]
 ]
 ```
 
-> In the newer version all inputs & outputs can be merged like this:
+> In upcoming version it will be possible to merge the `inputs` & `outputs` like:
 
 ```js
 [
@@ -87,6 +89,26 @@ The `inputs` and `outputs` define the data flows in and out the component. See b
     ]
 ]
 ```
+
+> Or
+
+```js
+[
+  props: {
+    in1: {
+      type: 'number'
+    },
+    in2: {
+      type: 'number'
+    },
+    out1: {
+      type: 'number',
+      direction: 'output'
+    }
+  },
+]
+```
+
 Fields:
 
 | key   |      type      |  description |
