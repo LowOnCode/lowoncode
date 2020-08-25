@@ -5,11 +5,13 @@ module.exports = {
   props: {
     in1: {
       type: 'number',
-      default: 0
+      default: 0,
+      input: true
     },
     in2: {
       type: 'number',
-      default: 0
+      default: 0,
+      input: true
     },
     out1: {
       type: 'number',
