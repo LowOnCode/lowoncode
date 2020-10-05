@@ -1,0 +1,47 @@
+{
+    "version" : "1.0.0",
+    "connections": [
+        {
+            "id": "8e6821ea-9ce1",
+            "from": ["node1", "out1"],
+            "to": ["node2", "in1"]
+        },
+        {
+            "id": "d568e0f9-ddd1",
+            "from": ["node2", "out1"],
+            "to": ["response1", "in1"]
+        }
+    ],
+    "children": [
+        {
+            "color": "green",
+            "name": "GET /hello",
+            "x": 64,
+            "y": 185,
+            "id": "node1",
+            "component": "httproute",
+            "options": {
+                "method": "GET",
+                "url": "/"
+            }
+        },
+        {
+            "color": "#B0331B",
+            "name": "Response",
+            "x": 544,
+            "y": 186,
+            "id": "response1",
+            "component": "httpresponse",
+            "options": {}
+        },
+        {
+            "component": "template",
+            "id": "node2",
+            "x": 295,
+            "y": 198,
+            "options": {
+                "template": "Hello from app {{id}}"
+            }
+        }
+    ]
+}

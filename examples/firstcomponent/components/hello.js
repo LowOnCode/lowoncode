@@ -30,7 +30,7 @@ module.exports = {
   },
 
   // Called when component is created
-  mounted: ({ setTimeout, console, send, watch, options }) => {
+  mounted ({ setTimeout, console, send, watch, options }) {
     console.log('Hello created')
 
     setTimeout(() => {

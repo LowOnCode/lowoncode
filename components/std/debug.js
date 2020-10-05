@@ -11,12 +11,8 @@ module.exports = {
     {
       color: '#666D77',
       description: `ctx`
-    }],
-  options: {
-    filename: '',
-    append: true,
-    delimiter: '\\n'
-  },
+    }
+  ],
   readme: `This node logs the incoming message to the console`,
   created: ({ on, log }) => {
     on('data', (incoming) => {

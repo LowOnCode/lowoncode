@@ -13,30 +13,28 @@ module.exports = {
   version: '0.0.2',
   color: '#5D9CEC',
   icon: 'file-text-o',
-  inputs: [
-    {
-      color: '#666D77',
-      description: `object`,
-      type: 'object'
-    }
-  ],
-  outputs: [
-    {
+
+  props: {
+    in1: {
+      type: 'any',
+      input: true
+    },
+    template: {
+      setting: true,
+      type: 'string',
+      default: '<h1>Hello {{request}}</h1>'
+    },
+    out1: {
+      output: true,
       color: '#666D77',
       description: `string`,
       type: 'string'
     }
-  ],
-  options: {
-    template: '<h1>Hello {{url}}</h1>'
   },
-  props: {
-    template: { type: 'string', default: '<h1>Hello {{request}}</h1>' }
-  },
-  mounted: ({ send, on, options }) => {
-    on('data', (message) => {
-      // console.log(message)
-      // console.log(options)
+
+  mounted ({ $emit, watch, options }) {
+    watch('in1', (message) => {
+      console.log(message)
 
       const context = message
       const { template } = options
@@ -47,8 +45,8 @@ module.exports = {
       // send(0, parsed)
 
       // TODO: come up with something to pass ctx
-      message.set(parsed)
-      send(0, message)
+      // message.set(parsed)
+      $emit('out1', parsed)
     })
   }
 }

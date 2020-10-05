@@ -21,7 +21,7 @@ module.exports = {
     }
   ],
   props: { },
-  mounted: ({ send, sendToNodes, on, runtime, instance, id }) => {
+  mounted ({ send, sendToNodes, on, runtime, instance, id }) {
     const VIRTUAL_PORT = 1
 
     // Virtual port

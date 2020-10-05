@@ -56,7 +56,7 @@ module.exports = {
     r.splice(index, 1)
   },
 
-  created ({ log, state, send, tools, ...instance }) {
+  mounted ({ log, state, send, tools, ...instance }) {
     // Instance state
     state = {
       beg: new Date(),

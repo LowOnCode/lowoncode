@@ -8,11 +8,12 @@ module.exports = {
     {
       color: '#666D77',
       description: `ctx`
-    }],
+    }
+  ],
   options: {
     key: ''
   },
-  readme: `With this component you can use a global variable`,
+  readme: `Use a global variable`,
   mounted: ({ send, options, variables }) => {
     send(0, variables[options.key])
   }

@@ -1,5 +1,5 @@
 const loc = require('../../index')
-const component = require('./hello')
+const component = require('./components/hello')
 
 const hello = loc.node(component, { enabled: true })
 

@@ -6,9 +6,9 @@ module.exports = {
   props: {
     enabled: { type: 'bool', default: true }
   },
-  mounted: async ({ send, on, Runtime, runtime, instance, options }) => {
+  mounted: async ({ Node, runtime, instance }) => {
     // console.log('Design', Runtime)
-    const subRuntime = new Runtime()
+    const subRuntime = new Node()
 
     // Link current components with subRuntime
     subRuntime.allComponents = runtime.components

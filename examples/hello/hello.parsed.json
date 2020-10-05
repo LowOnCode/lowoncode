@@ -1,0 +1,782 @@
+{
+  "server": "http://localhost:5678/",
+  "$timeouts": [],
+  "$intervals": [],
+  "$props": {},
+  "children": [
+    {
+      "$timeouts": [],
+      "$intervals": [],
+      "$props": {
+        "method": "GET",
+        "url": "/"
+      },
+      "children": [],
+      "$connections": [],
+      "id": "1563108178295",
+      "x": 64,
+      "y": 185,
+      "z": 0,
+      "connections": [],
+      "components": {},
+      "color": "",
+      "name": "",
+      "component": "httproute",
+      "options": {
+        "method": "GET",
+        "url": "/"
+      },
+      "description": "",
+      "inputs": [],
+      "outputs": [],
+      "props": {},
+      "$status": "mounted"
+    },
+    {
+      "$timeouts": [],
+      "$intervals": [],
+      "$props": {},
+      "children": [],
+      "$connections": [],
+      "id": "response1",
+      "x": 544,
+      "y": 186,
+      "z": 0,
+      "connections": [],
+      "components": {},
+      "color": "",
+      "name": "",
+      "component": "httpresponse",
+      "options": {},
+      "description": "",
+      "inputs": [],
+      "outputs": [],
+      "props": {},
+      "$status": "mounted"
+    },
+    {
+      "$timeouts": [],
+      "$intervals": [],
+      "$props": {
+        "template": "Hello from app {{id}}"
+      },
+      "children": [],
+      "$connections": [],
+      "id": "9bc86250-56ee",
+      "x": 295,
+      "y": 198,
+      "z": 0,
+      "connections": [],
+      "components": {},
+      "component": "template",
+      "options": {
+        "template": "Hello from app {{id}}"
+      },
+      "name": "",
+      "description": "",
+      "color": "",
+      "inputs": [],
+      "outputs": [],
+      "props": {},
+      "$status": "mounted"
+    }
+  ],
+  "$connections": [],
+  "id": "",
+  "x": 0,
+  "y": 0,
+  "z": 0,
+  "connections": [
+    {
+      "id": "8e6821ea-9ce1",
+      "from": [
+        "1563108178295",
+        0
+      ],
+      "to": [
+        "9bc86250-56ee",
+        0
+      ]
+    },
+    {
+      "id": "d568e0f9-ddd1",
+      "from": [
+        "9bc86250-56ee",
+        0
+      ],
+      "to": [
+        "response1",
+        0
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "root",
+      "components": [
+        {
+          "name": "std",
+          "version": "0.0.1",
+          "description": "Basic components",
+          "components": [
+            {
+              "name": "debug",
+              "title": "Debug",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "icon": "file-text-o",
+              "outputs": [],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "ctx"
+                }
+              ],
+              "readme": "This node logs the incoming message to the console"
+            },
+            {
+              "name": "design",
+              "description": "A component for running a sub design",
+              "version": "0.0.1",
+              "color": "#5D9CEC",
+              "props": {
+                "enabled": {
+                  "type": "bool",
+                  "default": true
+                }
+              }
+            },
+            {
+              "name": "filereader",
+              "title": "File Reader",
+              "version": "1.0.0",
+              "color": "#656D78",
+              "icon": "file-text-o",
+              "outputs": [
+                {
+                  "color": "#6BAD57",
+                  "description": "String"
+                }
+              ],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "Expects a Path Object"
+                }
+              ],
+              "options": {
+                "filename": "",
+                "append": true,
+                "delimiter": "\\n"
+              }
+            },
+            {
+              "name": "input",
+              "title": "Input",
+              "description": "Use this component to add an input to your design",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "inputs": [],
+              "outputs": [
+                {
+                  "color": "#666D77",
+                  "description": "ctx"
+                }
+              ],
+              "props": {
+                "name": {
+                  "type": "string",
+                  "default": "name"
+                },
+                "type": {
+                  "type": "string",
+                  "default": "string"
+                },
+                "color": {
+                  "type": "string",
+                  "default": "green"
+                }
+              }
+            },
+            {
+              "name": "label",
+              "description": "Label component",
+              "version": "0.0.1",
+              "color": "#656D78",
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "any",
+                  "type": "any"
+                }
+              ],
+              "outputs": [
+                {
+                  "color": "#666D77",
+                  "description": "any",
+                  "type": "any"
+                }
+              ],
+              "props": {}
+            },
+            {
+              "name": "output",
+              "title": "output",
+              "readme": "Use this component to add an output to your design",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "outputs": [],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "ctx"
+                }
+              ],
+              "props": {
+                "name": {
+                  "type": "string",
+                  "default": "name"
+                },
+                "type": {
+                  "type": "string",
+                  "default": "string"
+                },
+                "color": {
+                  "type": "string",
+                  "default": "green"
+                }
+              }
+            },
+            {
+              "name": "template",
+              "description": "A very simple template parser",
+              "version": "0.0.2",
+              "color": "#5D9CEC",
+              "icon": "file-text-o",
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "object",
+                  "type": "object"
+                }
+              ],
+              "outputs": [
+                {
+                  "color": "#666D77",
+                  "description": "string",
+                  "type": "string"
+                }
+              ],
+              "options": {
+                "template": "<h1>Hello {{url}}</h1>"
+              },
+              "props": {
+                "template": {
+                  "type": "string",
+                  "default": "<h1>Hello {{request}}</h1>"
+                }
+              }
+            },
+            {
+              "name": "timeout",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "outputs": [
+                {
+                  "color": "#666D77",
+                  "description": "any"
+                }
+              ],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "any"
+                }
+              ],
+              "options": {
+                "timeout": 1000
+              }
+            },
+            {
+              "name": "variable",
+              "title": "variable",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "outputs": [],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "ctx"
+                }
+              ],
+              "options": {
+                "key": ""
+              },
+              "readme": "Use a global variable"
+            }
+          ]
+        },
+        {
+          "name": "http",
+          "version": "0.0.1",
+          "description": "Component to interact with http",
+          "components": [
+            {
+              "name": "httpresponse",
+              "title": "HTTP Response",
+              "version": "1.0.2",
+              "color": "#5D9CEC",
+              "icon": "file-text-o",
+              "outputs": [],
+              "inputs": [
+                {
+                  "color": "#666D77",
+                  "description": "ctx",
+                  "type": "ctx"
+                }
+              ]
+            },
+            {
+              "name": "httproute",
+              "title": "HTTP Route",
+              "group": "HTTP",
+              "version": "1.0.0",
+              "color": "#5D9CEC",
+              "icon": "globe",
+              "options": {
+                "method": "GET",
+                "url": "",
+                "size": 5,
+                "cacheexpire": "5 minutes",
+                "cachepolicy": 0,
+                "timeout": 5
+              },
+              "refTemplate": "{{method}} {{url}}",
+              "props": {
+                "method": {
+                  "type": "enum",
+                  "enum": [
+                    "GET",
+                    "POST",
+                    "PUT",
+                    "DELETE",
+                    "PATCH",
+                    "OPTIONS"
+                  ],
+                  "default": "GET"
+                },
+                "url": {
+                  "type": "string",
+                  "default": ""
+                },
+                "size": {
+                  "type": "number",
+                  "default": 5
+                },
+                "cacheexpire": {
+                  "type": "number",
+                  "default": "5 minutes"
+                },
+                "cachepolicy": {
+                  "type": "number",
+                  "default": 0
+                },
+                "timeout": {
+                  "type": "number",
+                  "default": 2000,
+                  "description": "Time in seconds"
+                }
+              },
+              "outputs": [
+                {
+                  "color": "#6BAD57",
+                  "description": "ctx"
+                }
+              ],
+              "inputs": []
+            },
+            {
+              "name": "restproxy",
+              "title": "Proxy",
+              "group": "REST",
+              "color": "#6B9CE6",
+              "outputs": [
+                {
+                  "name": 0,
+                  "color": "#6BAD57",
+                  "description": "first output contains a __response__"
+                },
+                {
+                  "name": 1,
+                  "color": "#F6BB42",
+                  "description": "second output contains received data"
+                },
+                {
+                  "name": 2,
+                  "color": "#666D77",
+                  "description": "third output contains a average time of duration `Number`"
+                }
+              ],
+              "author": "Jelle",
+              "icon": "globe",
+              "version": "1.0.1",
+              "options": {
+                "method": "GET",
+                "url": "",
+                "target": "",
+                "headersreq": true,
+                "headersres": false,
+                "nodns": false,
+                "auth": false,
+                "middleware": [],
+                "length": 5,
+                "respond": false,
+                "timeout": 5,
+                "cacheexpire": "5 minutes",
+                "cachepolicy": 0,
+                "duration": false
+              },
+              "readme": "This component creates a REST proxy between local endpoint and external API. Proxy supports dynamic arguments between URL addresses via `{key}` markup (keys must be same)."
+            }
+          ]
+        }
+      ],
+      "$source": "/Users/jelle/YellowDigital/Projects/lowoncode/repos/lowoncode/components/index.js"
+    },
+    {
+      "name": "http",
+      "version": "0.0.1",
+      "description": "Component to interact with http",
+      "components": [
+        {
+          "name": "httpresponse",
+          "title": "HTTP Response",
+          "version": "1.0.2",
+          "color": "#5D9CEC",
+          "icon": "file-text-o",
+          "outputs": [],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "ctx",
+              "type": "ctx"
+            }
+          ]
+        },
+        {
+          "name": "httproute",
+          "title": "HTTP Route",
+          "group": "HTTP",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "icon": "globe",
+          "options": {
+            "method": "GET",
+            "url": "",
+            "size": 5,
+            "cacheexpire": "5 minutes",
+            "cachepolicy": 0,
+            "timeout": 5
+          },
+          "refTemplate": "{{method}} {{url}}",
+          "props": {
+            "method": {
+              "type": "enum",
+              "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "OPTIONS"
+              ],
+              "default": "GET"
+            },
+            "url": {
+              "type": "string",
+              "default": ""
+            },
+            "size": {
+              "type": "number",
+              "default": 5
+            },
+            "cacheexpire": {
+              "type": "number",
+              "default": "5 minutes"
+            },
+            "cachepolicy": {
+              "type": "number",
+              "default": 0
+            },
+            "timeout": {
+              "type": "number",
+              "default": 2000,
+              "description": "Time in seconds"
+            }
+          },
+          "outputs": [
+            {
+              "color": "#6BAD57",
+              "description": "ctx"
+            }
+          ],
+          "inputs": []
+        },
+        {
+          "name": "restproxy",
+          "title": "Proxy",
+          "group": "REST",
+          "color": "#6B9CE6",
+          "outputs": [
+            {
+              "name": 0,
+              "color": "#6BAD57",
+              "description": "first output contains a __response__"
+            },
+            {
+              "name": 1,
+              "color": "#F6BB42",
+              "description": "second output contains received data"
+            },
+            {
+              "name": 2,
+              "color": "#666D77",
+              "description": "third output contains a average time of duration `Number`"
+            }
+          ],
+          "author": "Jelle",
+          "icon": "globe",
+          "version": "1.0.1",
+          "options": {
+            "method": "GET",
+            "url": "",
+            "target": "",
+            "headersreq": true,
+            "headersres": false,
+            "nodns": false,
+            "auth": false,
+            "middleware": [],
+            "length": 5,
+            "respond": false,
+            "timeout": 5,
+            "cacheexpire": "5 minutes",
+            "cachepolicy": 0,
+            "duration": false
+          },
+          "readme": "This component creates a REST proxy between local endpoint and external API. Proxy supports dynamic arguments between URL addresses via `{key}` markup (keys must be same)."
+        }
+      ],
+      "$source": "/Users/jelle/YellowDigital/Projects/lowoncode/repos/lowoncode/components/http/index.js"
+    },
+    {
+      "name": "std",
+      "version": "0.0.1",
+      "description": "Basic components",
+      "components": [
+        {
+          "name": "debug",
+          "title": "Debug",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "icon": "file-text-o",
+          "outputs": [],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "ctx"
+            }
+          ],
+          "readme": "This node logs the incoming message to the console"
+        },
+        {
+          "name": "design",
+          "description": "A component for running a sub design",
+          "version": "0.0.1",
+          "color": "#5D9CEC",
+          "props": {
+            "enabled": {
+              "type": "bool",
+              "default": true
+            }
+          }
+        },
+        {
+          "name": "filereader",
+          "title": "File Reader",
+          "version": "1.0.0",
+          "color": "#656D78",
+          "icon": "file-text-o",
+          "outputs": [
+            {
+              "color": "#6BAD57",
+              "description": "String"
+            }
+          ],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "Expects a Path Object"
+            }
+          ],
+          "options": {
+            "filename": "",
+            "append": true,
+            "delimiter": "\\n"
+          }
+        },
+        {
+          "name": "input",
+          "title": "Input",
+          "description": "Use this component to add an input to your design",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "inputs": [],
+          "outputs": [
+            {
+              "color": "#666D77",
+              "description": "ctx"
+            }
+          ],
+          "props": {
+            "name": {
+              "type": "string",
+              "default": "name"
+            },
+            "type": {
+              "type": "string",
+              "default": "string"
+            },
+            "color": {
+              "type": "string",
+              "default": "green"
+            }
+          }
+        },
+        {
+          "name": "label",
+          "description": "Label component",
+          "version": "0.0.1",
+          "color": "#656D78",
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "any",
+              "type": "any"
+            }
+          ],
+          "outputs": [
+            {
+              "color": "#666D77",
+              "description": "any",
+              "type": "any"
+            }
+          ],
+          "props": {}
+        },
+        {
+          "name": "output",
+          "title": "output",
+          "readme": "Use this component to add an output to your design",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "outputs": [],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "ctx"
+            }
+          ],
+          "props": {
+            "name": {
+              "type": "string",
+              "default": "name"
+            },
+            "type": {
+              "type": "string",
+              "default": "string"
+            },
+            "color": {
+              "type": "string",
+              "default": "green"
+            }
+          }
+        },
+        {
+          "name": "template",
+          "description": "A very simple template parser",
+          "version": "0.0.2",
+          "color": "#5D9CEC",
+          "icon": "file-text-o",
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "object",
+              "type": "object"
+            }
+          ],
+          "outputs": [
+            {
+              "color": "#666D77",
+              "description": "string",
+              "type": "string"
+            }
+          ],
+          "options": {
+            "template": "<h1>Hello {{url}}</h1>"
+          },
+          "props": {
+            "template": {
+              "type": "string",
+              "default": "<h1>Hello {{request}}</h1>"
+            }
+          }
+        },
+        {
+          "name": "timeout",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "outputs": [
+            {
+              "color": "#666D77",
+              "description": "any"
+            }
+          ],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "any"
+            }
+          ],
+          "options": {
+            "timeout": 1000
+          }
+        },
+        {
+          "name": "variable",
+          "title": "variable",
+          "version": "1.0.0",
+          "color": "#5D9CEC",
+          "outputs": [],
+          "inputs": [
+            {
+              "color": "#666D77",
+              "description": "ctx"
+            }
+          ],
+          "options": {
+            "key": ""
+          },
+          "readme": "Use a global variable"
+        }
+      ],
+      "$source": "/Users/jelle/YellowDigital/Projects/lowoncode/repos/lowoncode/components/std/index.js"
+    }
+  ],
+  "name": "app",
+  "description": "",
+  "color": "",
+  "inputs": [],
+  "outputs": [],
+  "props": {},
+  "$status": "mounted"
+}

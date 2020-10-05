@@ -1,12 +1,23 @@
-const { componentsFromDirectory, Node } = require('../../index')
+const { loadAllFrom, Node } = require('../../index')
 
 async function main () {
   // Load global components
-  const components = await componentsFromDirectory(`${__dirname}/components`)
+  const components = await loadAllFrom(`${__dirname}/components`)
+
+  console.log(components)
 
   // Create nodes
-  const count1 = new Node(components.count, { x: 50, y: 100 })
-  const log1 = new Node(components.log, { label: '*** CUSTOM LOGGER ***', x: 300, y: 100 })
+  const count1 = new Node({
+    ...components.count,
+    x: 50,
+    y: 100
+  })
+  const log1 = new Node({
+    ...components.log,
+    label: '*** CUSTOM LOGGER ***',
+    x: 300,
+    y: 100
+  })
 
   // Root node
   const app = new Node({

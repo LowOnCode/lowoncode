@@ -16,9 +16,10 @@ module.exports = {
     {
       color: '#666D77',
       description: `Expects a Path Object`
-    }],
+    }
+  ],
   options: { filename: '', append: true, delimiter: '\\n' },
-  created: function ({ log, send, on, options }) {
+  created ({ log, send, on, options }) {
     on('data', (incoming) => {
       const path = `.${options.filename}`
       log(path)

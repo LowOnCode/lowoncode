@@ -11,13 +11,12 @@ module.exports = {
       description: `ctx`
     }
   ],
-
   props: {
     name: { type: 'string', default: 'name' },
     type: { type: 'string', default: 'string' },
     color: { type: 'string', default: 'green' }
   },
-  mounted: ({ send, options, variables }) => {
+  mounted ({ send, options, variables }) {
     send(0, variables[options.key])
   }
 }

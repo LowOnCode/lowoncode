@@ -20,7 +20,7 @@ module.exports = {
     color: { type: 'string', default: 'green' }
   },
 
-  mounted: ({ send, options, variables }) => {
+  mounted ({ send, options, variables }) {
     send(0, variables[options.key])
   }
 }

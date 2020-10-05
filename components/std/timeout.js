@@ -1,5 +1,3 @@
-/* eslint-disable no-tabs */
-
 module.exports = {
   name: 'timeout',
   version: '1.0.0',
@@ -14,11 +12,12 @@ module.exports = {
     {
       color: '#666D77',
       description: `any`
-    }],
+    }
+  ],
   options: {
     timeout: 1000
   },
-  created: ({ on, send, options }) => {
+  created ({ on, send, options }) {
     on('data', (incoming) => {
       const handle = () => {
         send(0, incoming)

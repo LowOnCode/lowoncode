@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec npm start",
+    "dev": "nodemon --watch . --exec npm start",
     "start": "lowoncode ./design.json --monitor --port 5678 -c ../../components"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
