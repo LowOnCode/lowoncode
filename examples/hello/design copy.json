@@ -1,0 +1,289 @@
+{
+  "server": "http://localhost:5678/",
+  "children": [
+    {
+      "type": "button",
+      "x": 50,
+      "y": 200,
+      "z": 0
+    },
+    {
+      "type": "image",
+      "x": 50,
+      "y": 200,
+      "z": 0,
+      "src": "https://randomuser.me/api/portraits/women/37.jpg"
+    },
+    {
+      "type": "node",
+      "id": "send1",
+      "x": 50,
+      "y": 200,
+      "z": 0,
+      "component": "http:route",
+      "options": {
+        "method": "GET",
+        "url": "/send",
+        "timeout": 2000
+      }
+    },
+    {
+      "type": "node",
+      "id": "sms1",
+      "x": 250,
+      "y": 200,
+      "z": 0,
+      "component": "twilio/sms",
+      "options": {
+        "message": "This will be the body of the new message!",
+        "to": "+31641107624",
+        "apiKey": "b49c7b8c058cbc8ae8f0397768994869"
+      }
+    },
+    {
+      "type": "node",
+      "id": "logglobal",
+      "x": 500,
+      "y": 200,
+      "z": 0,
+      "component": "log",
+      "options": {
+        "name": "logger1",
+        "enabled": true,
+        "showMessage": true
+      }
+    },
+    {
+      "type": "node",
+      "id": "heartbeat1",
+      "x": 50,
+      "y": 400,
+      "z": 0,
+      "component": "interval",
+      "options": {
+        "duration": 3000
+      }
+    },
+    {
+      "type": "node",
+      "id": "logheartbeat",
+      "x": 300,
+      "y": 400,
+      "z": 0,
+      "component": "log",
+      "options": {
+        "name": "logger1",
+        "enabled": false,
+        "showMessage": false
+      }
+    },
+    {
+      "type": "node",
+      "id": "timeout1",
+      "x": 300,
+      "y": 100,
+      "z": 0,
+      "component": "timeout",
+      "options": {
+        "duration": 1000
+      }
+    },
+    {
+      "type": "node",
+      "id": "test1",
+      "x": 50,
+      "y": 300,
+      "z": 0,
+      "component": "http:routetest",
+      "options": {
+        "method": "GET",
+        "url": "/test",
+        "timeout": 2000
+      }
+    },
+    {
+      "type": "node",
+      "id": "log1",
+      "x": 300,
+      "y": 300,
+      "z": 0,
+      "component": "log",
+      "options": {
+        "name": "logger1",
+        "enabled": true,
+        "showMessage": false
+      }
+    },
+    {
+      "type": "node",
+      "id": "log2",
+      "x": 300,
+      "y": 350,
+      "z": 0,
+      "component": "log",
+      "options": {
+        "name": "logger1",
+        "enabled": true,
+        "showMessage": false
+      }
+    },
+    {
+      "type": "node",
+      "id": "route1",
+      "x": 50,
+      "y": 100,
+      "z": 0,
+      "component": "http:route",
+      "options": {
+        "method": "GET",
+        "url": "/",
+        "timeout": 2000
+      }
+    },
+    {
+      "type": "node",
+      "id": "response1",
+      "x": 538,
+      "y": 58,
+      "z": 0,
+      "component": "http:response",
+      "options": {}
+    },
+    {
+      "type": "node",
+      "id": "10767679-dad9",
+      "x": 517,
+      "y": 343,
+      "z": 0,
+      "component": "text",
+      "options": {
+        "text": "Some text"
+      }
+    },
+    {
+      "type": "node",
+      "id": "2d47b964-bcaa",
+      "x": 761,
+      "y": 348,
+      "z": 0,
+      "component": "twilio/sms",
+      "options": {
+        "message": "This will be the body of the new message!",
+        "to": "+31641107624",
+        "apiKey": "SIGN-UP-FOR-KEY"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "type": "connection",
+      "id": "2ef06459-a062",
+      "from": [
+        "route1",
+        "out1"
+      ],
+      "to": [
+        "timeout1",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "1234834f-20c5",
+      "from": [
+        "timeout1",
+        "out1"
+      ],
+      "to": [
+        "response1",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "2b700d81-1ce1",
+      "from": [
+        "test1",
+        "out1"
+      ],
+      "to": [
+        "log1",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "19af6202-d041",
+      "from": [
+        "test1",
+        "out2"
+      ],
+      "to": [
+        "log2",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "b5f60463-5ba4",
+      "from": [
+        "heartbeat1",
+        "out1"
+      ],
+      "to": [
+        "logheartbeat",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "5d7772f6-bdab",
+      "from": [
+        "send1",
+        "out1"
+      ],
+      "to": [
+        "sms1",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "9e7b0f51-0daf",
+      "from": [
+        "sms1",
+        "success"
+      ],
+      "to": [
+        "logglobal",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "ec9358e5-51c4",
+      "from": [
+        "sms1",
+        "error"
+      ],
+      "to": [
+        "logglobal",
+        "in1"
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "74ede629-03e8",
+      "from": [
+        "10767679-dad9",
+        "out1",
+        0
+      ],
+      "to": [
+        "2d47b964-bcaa",
+        "message",
+        1
+      ]
+    }
+  ]
+}

@@ -2,13 +2,11 @@
   "name": "hello",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch . --exec npm start",
-    "start": "lowoncode ./design.json --monitor --port 5678 -c ../../components"
+    "dev": "nodemon -watch . --exec npm start",
+    "start": "lowoncode ./design.json --allow-write --monitor --apiKey 123123 --port 5678"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {}
+  "author": "Jelle",
+  "license": "ISC"
 }

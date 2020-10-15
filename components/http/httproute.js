@@ -1,5 +1,3 @@
-// const router =
-
 module.exports = {
   name: 'httproute',
   title: 'HTTP Route',

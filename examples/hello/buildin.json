@@ -1,0 +1,29 @@
+{
+  "server": "http://localhost:5678/",
+  "children": [
+    {
+      "type": "button",
+      "x": 50,
+      "y": 200,
+      "z": 0
+    },
+    {
+      "type": "image",
+      "x": 250,
+      "y": 200,
+      "z": 0,
+      "options": {
+        "src": "https://picsum.photos/200/300"
+      }
+    },
+    {
+      "type": "text",
+      "x": 450,
+      "y": 200,
+      "z": 0,
+      "options": {
+        "text": "Hello World"
+      }
+    }
+  ]
+}

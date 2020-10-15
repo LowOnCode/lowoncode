@@ -1,47 +1,156 @@
 {
-    "version" : "1.0.0",
-    "connections": [
-        {
-            "id": "8e6821ea-9ce1",
-            "from": ["node1", "out1"],
-            "to": ["node2", "in1"]
-        },
-        {
-            "id": "d568e0f9-ddd1",
-            "from": ["node2", "out1"],
-            "to": ["response1", "in1"]
-        }
-    ],
-    "children": [
-        {
-            "color": "green",
-            "name": "GET /hello",
-            "x": 64,
-            "y": 185,
-            "id": "node1",
-            "component": "httproute",
-            "options": {
-                "method": "GET",
-                "url": "/"
-            }
-        },
-        {
-            "color": "#B0331B",
-            "name": "Response",
-            "x": 544,
-            "y": 186,
-            "id": "response1",
-            "component": "httpresponse",
-            "options": {}
-        },
-        {
-            "component": "template",
-            "id": "node2",
-            "x": 295,
-            "y": 198,
-            "options": {
-                "template": "Hello from app {{id}}"
-            }
-        }
-    ]
+  "server": "http://localhost:5678/",
+  "children": [
+    {
+      "type": "node",
+      "id": "1d05b236-b344",
+      "x": 363,
+      "y": 209,
+      "z": 0,
+      "component": "twilio/sms",
+      "options": {
+        "message": "This will be the body of the new message!",
+        "to": "+31641107624",
+        "apiKey": "SIGN-UP-FOR-KEY"
+      }
+    },
+    {
+      "type": "node",
+      "id": "916fd797-366e",
+      "x": 120,
+      "y": 211,
+      "z": 0,
+      "component": "text",
+      "options": {
+        "text": "A nice message"
+      }
+    },
+    {
+      "type": "node",
+      "id": "a85ec9b7-9923",
+      "x": 122,
+      "y": 103,
+      "z": 0,
+      "component": "http:route",
+      "options": {
+        "method": "GET",
+        "url": "/send",
+        "timeout": 2000,
+        "verbose": true
+      }
+    },
+    {
+      "type": "node",
+      "id": "a8f545bf-e5f2",
+      "x": 137,
+      "y": 379,
+      "z": 0,
+      "component": "http:route",
+      "options": {
+        "method": "GET",
+        "url": "/test",
+        "timeout": 2000,
+        "verbose": true
+      }
+    },
+    {
+      "type": "node",
+      "id": "219f5296-88aa",
+      "x": 393,
+      "y": 376,
+      "z": 0,
+      "component": "http:response",
+      "options": {}
+    },
+    {
+      "type": "node",
+      "id": "2b529960-fb38",
+      "x": 595,
+      "y": 168,
+      "z": 0,
+      "component": "http:response",
+      "options": {}
+    },
+    {
+      "type": "node",
+      "id": "b05dd622-b266",
+      "x": 131,
+      "y": 458,
+      "component": "text"
+    }
+  ],
+  "connections": [
+    {
+      "type": "connection",
+      "id": "ab1b1ccc-b180",
+      "from": [
+        "916fd797-366e",
+        "out1",
+        0
+      ],
+      "to": [
+        "1d05b236-b344",
+        "message",
+        1
+      ],
+      "x": null,
+      "y": null
+    },
+    {
+      "type": "connection",
+      "id": "6e59dbbb-b1f6",
+      "from": [
+        "a85ec9b7-9923",
+        "out1",
+        0
+      ],
+      "to": [
+        "1d05b236-b344",
+        "trigger",
+        0
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "6f876f85-9946",
+      "from": [
+        "a8f545bf-e5f2",
+        "out1",
+        0
+      ],
+      "to": [
+        "219f5296-88aa",
+        "in1",
+        0
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "9984a8b3-fa5d",
+      "from": [
+        "1d05b236-b344",
+        "response",
+        0
+      ],
+      "to": [
+        "2b529960-fb38",
+        "in1",
+        0
+      ]
+    },
+    {
+      "type": "connection",
+      "id": "c6b7dce4-16d2",
+      "from": [
+        "b05dd622-b266",
+        "out1",
+        0
+      ],
+      "to": [
+        "219f5296-88aa",
+        "body",
+        1
+      ]
+    }
+  ]
 }

@@ -1,7 +1,5 @@
 module.exports = {
   description: `Count two inputs`,
-  version: '0.0.1',
-
   props: {
     in1: {
       type: 'number',

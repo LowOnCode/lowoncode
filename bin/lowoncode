@@ -22,6 +22,8 @@ program
   .option('-s, --strict', 'enable strict modus, throws error on faults. If using in code you should handle the "unhandledRejection" event.')
   .option('-c, --components <components>', 'specify components directory', './components')
   .option('-r, --repl', 'enable REPL', false)
+  .option('--allow-write', 'allow writes', false)
+  .option('--apiKey', 'set master apikey', null)
   .parse(process.argv)
 
 // console.log(`Cwd: ${process.cwd()}`)

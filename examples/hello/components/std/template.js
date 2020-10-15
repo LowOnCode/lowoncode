@@ -23,15 +23,25 @@ module.exports = {
     // }
   },
 
-  emits: {
-    out1: {
+  // TODO
+  // emits: {
+  //   out1: {
+  //     color: '#666D77',
+  //     description: `string`,
+  //     type: 'string'
+  //   }
+  // },
+
+  outputs: [
+    {
+      name: 'out1',
       color: '#666D77',
       description: `string`,
       type: 'string'
     }
-  },
+  ],
 
-  mounted ({ $emit, watch, options }) {
+  mounted ({ $emit, watch, state }) {
     const stringTemplateParser = (expression, valueObj = {}) => {
       const templateMatcher = /{{\s?([^{}\s]*)\s?}}/g
       const text = expression.replace(templateMatcher, (substring, value, index) => {
@@ -42,18 +52,11 @@ module.exports = {
     }
 
     watch('in1', (message) => {
-      console.log(message)
+      console.log('Incoming message', Object.keys(message).length)
 
-      const context = message
-      const { template } = options
-      // TODO: process template
-      const parsed = stringTemplateParser(template, context.request)
+      // const context = message
+      const parsed = stringTemplateParser(state.template, message)
 
-      // Send
-      // send(0, parsed)
-
-      // TODO: come up with something to pass ctx
-      // message.set(parsed)
       $emit('out1', parsed)
     })
   }
